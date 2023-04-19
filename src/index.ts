@@ -1,44 +1,57 @@
 import { RuleConfig, Level } from "./rules";
-import strategyDecision from './strategyDecision';
+import strategyDecision from "./strategyDecision";
+import { OpenApiService } from "@debank/rabby-api";
 
 export interface Result {
   id: string;
   level: Level;
   value: any;
   valueDescription: string;
-  valueDefine: RuleConfig['valueDefine'];
+  valueDefine: RuleConfig["valueDefine"];
 }
 
 class Engine {
   rules: RuleConfig[] = [];
+  apiService: OpenApiService;
 
-  constructor(rules) {
+  constructor(rules: RuleConfig[], apiService: OpenApiService) {
     this.rules = rules;
+    this.apiService = apiService;
   }
-  
+
   async run(ctx) {
-    const results: Result[] = []
+    const results: Result[] = [];
     this.rules.forEach(async (rule) => {
       const deps = rule.requires;
-      if (deps.every(key => key in ctx)) {
-        const value = await rule.getValue(ctx);
-        const riskLevel = strategyDecision(value, rule);
-        if (riskLevel) {
+      if (deps.every((key) => key in ctx)) {
+        try {
+          const value = await rule.getValue(ctx, this.apiService);
+          const riskLevel = strategyDecision(value, rule);
+          if (riskLevel) {
+            results.push({
+              id: rule.id,
+              level: riskLevel,
+              value,
+              valueDescription: rule.valueDescription,
+              valueDefine: rule.valueDefine,
+            });
+          }
+        } catch (e) {
           results.push({
             id: rule.id,
-            level: riskLevel,
-            value,
+            level: Level.ERROR,
+            value: null,
             valueDescription: rule.valueDescription,
             valueDefine: rule.valueDefine,
-          })
+          });
         }
       }
-    })
+    });
     return results;
   }
-  
-  reloadRules(rules) {
-    this.rules = rules
+
+  reloadRules(rules: RuleConfig[]) {
+    this.rules = rules;
   }
 }
 

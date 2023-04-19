@@ -1,5 +1,17 @@
+import { OpenApiService } from "@debank/rabby-api";
+import { caseInsensitiveCompare } from './utils';
+
+export interface UserData {
+  originWhitelist: string[];
+  originBlacklist: string[];
+}
+
 interface Context {
-  origin?: string;
+  origin?: {
+    communityCount: number;
+    url: string;
+  };
+  userData: UserData;
 }
 
 interface NumberValue {
@@ -28,10 +40,11 @@ export enum Level {
   WARNING = 'warning',
   DANGER = 'danger',
   FORBIDDEN = 'forbidden',
+  ERROR = 'error',
 }
 
 export type Threshold = {
-  [key in Level]?: NumberDefine | boolean | string[]
+  [key in Level]?: NumberValue | boolean | string[]
 };
 
 export interface RuleConfig {
@@ -42,12 +55,121 @@ export interface RuleConfig {
   defaultThreshold: Threshold // 默认阈值
   customThreshold: Threshold // 用户自定义阈值
   requires: string[] // 规则运行依赖的主属性，需要全部有值才执行该规则
-  getValue(ctx: Context): Promise<any> // 取值函数，从引擎外部获取数据
+  getValue(ctx: Context, apiService: OpenApiService): Promise<any> // 取值函数，从引擎外部获取数据
 }
 
 export const defaultRules: RuleConfig[] = [
   {
+    // Origin 被 Rabby 标记为欺诈网址
     id: '1001',
+    enable: true,
+    valueDescription: '',
+    valueDefine: {
+      type: 'boolean'
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ['origin'],
+    async getValue(ctx, apiService) {
+      // TODO
+    }
+  },
+  {
+    // Origin 被 MetaMask 标记为欺诈网址
+    id: '1002',
+    enable: true,
+    valueDescription: '',
+    valueDefine: {
+      type: 'boolean'
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ['origin'],
+    async getValue(ctx, apiService) {
+      // TODO
+    }
+  },
+  {
+    // Origin 被 ScamSniffer 标记为欺诈网址
+    id: '1003',
+    enable: true,
+    valueDescription: '',
+    valueDefine: {
+      type: 'boolean'
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ['origin'],
+    async getValue(ctx, apiService) {
+      // TODO
+    }
+  },
+  {
+    // Origin 被知名社区平台收录数
+    id: '1004',
+    enable: true,
+    valueDescription: '',
+    valueDefine: {
+      type: 'int',
+      min: 0,
+      minIncluded: true,
+      max: 100,
+      maxIncluded: true,
+    },
+    defaultThreshold: {
+      danger: {
+        max: 0,
+        maxIncluded: false,
+        min: null,
+        minIncluded: false,
+      },
+      warning: {
+        max: 1,
+        maxIncluded: true,
+        min: 0,
+        minIncluded: false,
+      },
+    },
+    customThreshold: {},
+    requires: ['origin'],
+    async getValue(ctx, apiService) {
+      // TODO
+    }
+  },
+  {
+    // Origin 使用人数
+    id: '1005',
+    enable: true,
+    valueDescription: '',
+    valueDefine: {
+      type: 'enum',
+      list: ['very_low', 'low', 'average', 'high'],
+      display: {
+        'very_low': 'Very Low',
+        low: 'Low',
+        average: 'Average',
+        high: 'High',
+      }
+    },
+    defaultThreshold: {
+      danger: ['very_low'],
+      warning: ['low'],
+    },
+    customThreshold: {},
+    requires: ['origin'],
+    async getValue(ctx, apiService) {
+      // TODO
+    }
+  },
+  {
+    // Origin 在用户黑名单中
+    id: '1006',
     enable: true,
     valueDescription: '',
     valueDefine: {
@@ -59,8 +181,24 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ['origin'],
     async getValue(ctx) {
-      // TODO
-      return true
+      return ctx.userData.originBlacklist.some(item => caseInsensitiveCompare(item, ctx.origin!.url))
     }
-  }
+  },
+  {
+    // Origin 在用户白名单中
+    id: '1007',
+    enable: true,
+    valueDescription: '',
+    valueDefine: {
+      type: 'boolean'
+    },
+    defaultThreshold: {
+      safe: true,
+    },
+    customThreshold: {},
+    requires: ['origin'],
+    async getValue(ctx) {
+      return ctx.userData.originBlacklist.some(item => caseInsensitiveCompare(item, ctx.origin!.url))
+    }
+  },
 ];

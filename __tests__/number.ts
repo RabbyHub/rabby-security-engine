@@ -1,9 +1,10 @@
 import Engine from "../src";
+import { RuleConfig } from "../src/rules";
 
 describe("number threshold test", () => {
   let engine: Engine;
   beforeEach(() => {
-    const rules = [
+    const rules: RuleConfig[] = [
       {
         id: "1001",
         enable: true,
@@ -44,11 +45,11 @@ describe("number threshold test", () => {
         customThreshold: {},
         requires: ["origin"],
         async getValue(ctx) {
-          return ctx.origin.communityCount;
+          return ctx.origin!.communityCount;
         },
       },
     ];
-    engine = new Engine(rules);
+    engine = new Engine(rules, {} as any);
   });
 
   test("forbidden", async () => {
@@ -136,7 +137,7 @@ describe("number threshold test", () => {
 describe("number infinite test", () => {
   let engine: Engine;
   beforeEach(() => {
-    const rules = [
+    const rules: RuleConfig[] = [
       {
         id: "1001",
         enable: true,
@@ -144,14 +145,14 @@ describe("number infinite test", () => {
         valueDefine: {
           type: "float",
           min: null,
-          minIncluded: null,
+          minIncluded: false,
           max: null,
-          maxIncluded: null,
+          maxIncluded: false,
         },
         defaultThreshold: {
           forbidden: {
             min: null,
-            minIncluded: null,
+            minIncluded: false,
             max: 1,
             maxIncluded: true,
           },
@@ -177,11 +178,11 @@ describe("number infinite test", () => {
         customThreshold: {},
         requires: ["origin"],
         async getValue(ctx) {
-          return ctx.origin.communityCount;
+          return ctx.origin!.communityCount;
         },
       },
     ];
-    engine = new Engine(rules);
+    engine = new Engine(rules, {} as any);
   });
 
   test("forbidden", async () => {
@@ -194,9 +195,9 @@ describe("number infinite test", () => {
         valueDefine: {
           type: "float",
           min: null,
-          minIncluded: null,
+          minIncluded: false,
           max: null,
-          maxIncluded: null,
+          maxIncluded: false,
         },
         valueDescription: "",
       },
@@ -215,9 +216,9 @@ describe("number infinite test", () => {
         valueDefine: {
           type: "float",
           min: null,
-          minIncluded: null,
+          minIncluded: false,
           max: null,
-          maxIncluded: null,
+          maxIncluded: false,
         },
         valueDescription: "",
       },
@@ -233,16 +234,16 @@ describe("number infinite test", () => {
         valueDefine: {
           type: "float",
           min: null,
-          minIncluded: null,
+          minIncluded: false,
           max: null,
-          maxIncluded: null,
+          maxIncluded: false,
         },
         defaultThreshold: {
           forbidden: {
             min: null,
-            minIncluded: null,
+            minIncluded: false,
             max: null,
-            maxIncluded: null,
+            maxIncluded: false,
           },
           danger: {
             min: 1.5,
@@ -266,7 +267,7 @@ describe("number infinite test", () => {
         customThreshold: {},
         requires: ["origin"],
         async getValue(ctx) {
-          return ctx.origin.communityCount;
+          return ctx.origin!.communityCount;
         },
       },
     ]);
@@ -282,9 +283,9 @@ describe("number infinite test", () => {
         valueDefine: {
           type: "float",
           min: null,
-          minIncluded: null,
+          minIncluded: false,
           max: null,
-          maxIncluded: null,
+          maxIncluded: false,
         },
         valueDescription: "",
       },

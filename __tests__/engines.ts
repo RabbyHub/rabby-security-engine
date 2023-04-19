@@ -1,10 +1,11 @@
 import Engine from "../src";
+import { RuleConfig } from "../src/rules";
 
 describe("multi rules", () => {
   let engine: Engine;
 
   beforeEach(() => {
-    const rules = [
+    const rules: RuleConfig[] = [
       {
         id: "1001",
         enable: true,
@@ -18,7 +19,7 @@ describe("multi rules", () => {
         customThreshold: {},
         requires: ["origin"],
         async getValue(ctx) {
-          return ctx.origin.url === 'https://rabby.io';
+          return ctx.origin!.url === "https://rabby.io";
         },
       },
       {
@@ -34,17 +35,17 @@ describe("multi rules", () => {
         customThreshold: {},
         requires: ["origin"],
         async getValue(ctx) {
-          return ctx.origin.communityCount < 1;
+          return ctx.origin!.communityCount < 1;
         },
-      }
+      },
     ];
-    engine = new Engine(rules);
-  })
+    engine = new Engine(rules, {} as any);
+  });
 
   test("both trigger", async () => {
     const result = await engine.run({
       origin: {
-        url: 'https://rabby.io',
+        url: "https://rabby.io",
         communityCount: 0,
       },
     });
@@ -73,7 +74,7 @@ describe("multi rules", () => {
   test("only trigger one", async () => {
     const result = await engine.run({
       origin: {
-        url: 'https://rabby.io',
+        url: "https://rabby.io",
         communityCount: 3,
       },
     });
@@ -86,7 +87,7 @@ describe("multi rules", () => {
         valueDefine: {
           type: "boolean",
         },
-      }
+      },
     ]);
   });
 
@@ -107,7 +108,7 @@ describe("multi rules", () => {
         },
         requires: ["origin"],
         async getValue(ctx) {
-          return ctx.origin.url === 'https://rabby.io';
+          return ctx.origin!.url === "https://rabby.io";
         },
       },
       {
@@ -123,13 +124,13 @@ describe("multi rules", () => {
         customThreshold: {},
         requires: ["origin"],
         async getValue(ctx) {
-          return ctx.origin.communityCount < 1;
+          return ctx.origin!.communityCount < 1;
         },
-      }
+      },
     ]);
     const result = await engine.run({
       origin: {
-        url: 'https://rabby.io',
+        url: "https://rabby.io",
         communityCount: 3,
       },
     });
@@ -142,7 +143,7 @@ describe("multi rules", () => {
         valueDefine: {
           type: "boolean",
         },
-      }
+      },
     ]);
-  })
+  });
 });

@@ -1,9 +1,10 @@
 import Engine from "../src";
+import { RuleConfig } from "../src/rules";
 
 describe("boolean", () => {
   let engine: Engine;
   beforeEach(() => {
-    const rules = [
+    const rules: RuleConfig[] = [
       {
         id: "1001",
         enable: true,
@@ -17,16 +18,18 @@ describe("boolean", () => {
         customThreshold: {},
         requires: ["origin"],
         async getValue(ctx) {
-          return ctx.origin === 1;
+          return ctx.origin!.url === "https://rabby1.io";
         },
       },
     ];
-    engine = new Engine(rules);
+    engine = new Engine(rules, {} as any);
   });
 
   test("1001 should be forbidden", async () => {
     const result = await engine.run({
-      origin: 1,
+      origin: {
+        url: "https://rabby1.io",
+      },
     });
     expect(result).toEqual([
       {

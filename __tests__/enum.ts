@@ -1,4 +1,5 @@
 import Engine from "../src";
+import { RuleConfig } from "../src/rules";
 
 const originTest = {
   "https://very-low.com": "very_low",
@@ -10,7 +11,7 @@ const originTest = {
 describe("enum", () => {
   let engine: Engine;
   beforeEach(() => {
-    const rules = [
+    const rules: RuleConfig[] = [
       {
         id: "1001",
         enable: true,
@@ -28,12 +29,12 @@ describe("enum", () => {
         customThreshold: {},
         requires: ["origin"],
         async getValue(ctx) {
-          const url = ctx.origin.url;
+          const url = ctx.origin!.url;
           return originTest[url] || "high";
         },
       },
     ];
-    engine = new Engine(rules);
+    engine = new Engine(rules, {} as any);
   });
 
   test("forbidden", async () => {
