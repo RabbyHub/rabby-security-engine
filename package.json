@@ -8,9 +8,6 @@
     "build": "rimraf dist && tsc",
     "prepublishOnly": "yarn build && yarn test"
   },
-  "exports": {
-    ".": "./dist"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RabbyHub/rabby-security-engine.git"
