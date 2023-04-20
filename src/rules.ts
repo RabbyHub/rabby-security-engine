@@ -66,7 +66,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 被 Rabby 标记为欺诈网址
     id: "1001",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site has been flagged as fraudulent by Rabby",
     valueDefine: {
       type: "boolean",
     },
@@ -85,7 +85,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 被 MetaMask 标记为欺诈网址
     id: "1002",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site has been flagged as fraudulent by MetaMask",
     valueDefine: {
       type: "boolean",
     },
@@ -104,7 +104,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 被 ScamSniffer 标记为欺诈网址
     id: "1003",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site has been flagged as fraudulent by ScamSniffer",
     valueDefine: {
       type: "boolean",
     },
@@ -123,7 +123,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 被知名社区平台收录数
     id: "1004",
     enable: true,
-    valueDescription: "",
+    valueDescription: "The number of community platforms that have listed this site",
     valueDefine: {
       type: "int",
       min: 0,
@@ -156,7 +156,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 使用人数
     id: "1005",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site popularity",
     valueDefine: {
       type: "enum",
       list: ["very_low", "low", "average", "high"],
@@ -183,7 +183,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 在用户黑名单中
     id: "1006",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site has been added to your blacklist",
     valueDefine: {
       type: "boolean",
     },
@@ -202,7 +202,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 在用户白名单中
     id: "1007",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site has been added to your whitelist",
     valueDefine: {
       type: "boolean",
     },
