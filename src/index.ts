@@ -21,32 +21,34 @@ class Engine {
 
   async run(ctx) {
     const results: Result[] = [];
-    this.rules.forEach(async (rule) => {
-      const deps = rule.requires;
-      if (deps.every((key) => key in ctx)) {
-        try {
-          const value = await rule.getValue(ctx, this.apiService);
-          const riskLevel = strategyDecision(value, rule);
-          if (riskLevel) {
+    await Promise.all(
+      this.rules.map(async (rule) => {
+        const deps = rule.requires;
+        if (deps.every((key) => key in ctx)) {
+          try {
+            const value = await rule.getValue(ctx, this.apiService);
+            const riskLevel = strategyDecision(value, rule);
+            if (riskLevel) {
+              results.push({
+                id: rule.id,
+                level: riskLevel,
+                value,
+                valueDescription: rule.valueDescription,
+                valueDefine: rule.valueDefine,
+              });
+            }
+          } catch (e) {
             results.push({
               id: rule.id,
-              level: riskLevel,
-              value,
+              level: Level.ERROR,
+              value: null,
               valueDescription: rule.valueDescription,
               valueDefine: rule.valueDefine,
             });
           }
-        } catch (e) {
-          results.push({
-            id: rule.id,
-            level: Level.ERROR,
-            value: null,
-            valueDescription: rule.valueDescription,
-            valueDefine: rule.valueDefine,
-          });
         }
-      }
-    });
+      })
+    );
     return results;
   }
 

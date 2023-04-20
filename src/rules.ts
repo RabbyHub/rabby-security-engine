@@ -17,7 +17,7 @@ export interface Context extends ContextActionData {
   userData: UserData;
 }
 
-interface NumberValue {
+export interface NumberValue {
   min: number | null; // 最小值
   minIncluded: boolean; // boolean, 最小值是否为小于等于
   max: number | null; // 最大值，null 代表无限大（小）
