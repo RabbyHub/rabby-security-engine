@@ -76,7 +76,9 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ["origin"],
     async getValue(ctx, apiService) {
-      // TODO
+      const origin = ctx.origin!;
+      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'rabby');
+      return is_scam;
     },
   },
   {
@@ -93,7 +95,9 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ["origin"],
     async getValue(ctx, apiService) {
-      // TODO
+      const origin = ctx.origin!;
+      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'metamask');
+      return is_scam;
     },
   },
   {
@@ -110,7 +114,9 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ["origin"],
     async getValue(ctx, apiService) {
-      // TODO
+      const origin = ctx.origin!;
+      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'scam_sniffer');
+      return is_scam;
     },
   },
   {
@@ -141,8 +147,9 @@ export const defaultRules: RuleConfig[] = [
     },
     customThreshold: {},
     requires: ["origin"],
-    async getValue(ctx, apiService) {
-      // TODO
+    async getValue(ctx) {
+      const origin = ctx.origin!;
+      return origin.communityCount;
     },
   },
   {
@@ -167,7 +174,9 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ["origin"],
     async getValue(ctx, apiService) {
-      // TODO
+      const origin = ctx.origin!;
+      const { level } = await apiService.getOriginPopularityLevel(origin.url);
+      return level;
     },
   },
   {
