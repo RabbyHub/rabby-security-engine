@@ -24,7 +24,7 @@ class Engine {
     await Promise.all(
       this.rules.map(async (rule) => {
         const deps = rule.requires;
-        if (deps.every((key) => key in ctx)) {
+        if (rule.enable && deps.every((key) => key in ctx)) {
           try {
             const value = await rule.getValue(ctx, this.apiService);
             const riskLevel = strategyDecision(value, rule);
