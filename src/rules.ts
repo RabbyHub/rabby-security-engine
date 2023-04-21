@@ -9,6 +9,7 @@ export interface UserData {
 export interface ContextActionData {
   origin?: {
     communityCount: number;
+    popularLevel: string;
     url: string;
   };
 }
@@ -173,10 +174,9 @@ export const defaultRules: RuleConfig[] = [
     },
     customThreshold: {},
     requires: ["origin"],
-    async getValue(ctx, apiService) {
+    async getValue(ctx) {
       const origin = ctx.origin!;
-      const { level } = await apiService.getOriginPopularityLevel(origin.url);
-      return level;
+      return origin.popularLevel;
     },
   },
   {
