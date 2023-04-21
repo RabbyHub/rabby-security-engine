@@ -212,7 +212,7 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ["origin"],
     async getValue(ctx) {
-      return ctx.userData.originBlacklist.some((item) =>
+      return ctx.userData.originWhitelist.some((item) =>
         caseInsensitiveCompare(item, ctx.origin!.url)
       );
     },
