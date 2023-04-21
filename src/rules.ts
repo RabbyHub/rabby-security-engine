@@ -116,7 +116,7 @@ export const defaultRules: RuleConfig[] = [
     requires: ["origin"],
     async getValue(ctx, apiService) {
       const origin = ctx.origin!;
-      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'scam_sniffer');
+      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'scamsniffer');
       return is_scam;
     },
   },
