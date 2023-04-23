@@ -135,7 +135,7 @@ export const defaultRules: RuleConfig[] = [
     defaultThreshold: {
       danger: {
         max: 0,
-        maxIncluded: false,
+        maxIncluded: true,
         min: null,
         minIncluded: false,
       },
