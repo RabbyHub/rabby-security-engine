@@ -45,6 +45,7 @@ export enum Level {
   DANGER = "danger",
   FORBIDDEN = "forbidden",
   ERROR = "error",
+  CLOSED = 'closed',
 }
 
 export type Threshold = {
