@@ -161,11 +161,11 @@ export const defaultRules: RuleConfig[] = [
     valueDescription: "Site popularity",
     valueDefine: {
       type: "enum",
-      list: ["very_low", "low", "average", "high"],
+      list: ["very_low", "low", "medium", "high"],
       display: {
         very_low: "Very Low",
         low: "Low",
-        average: "Average",
+        medium: "Medium",
         high: "High",
       },
     },
