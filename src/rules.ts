@@ -170,8 +170,7 @@ export const defaultRules: RuleConfig[] = [
       },
     },
     defaultThreshold: {
-      danger: ["very_low"],
-      warning: ["low"],
+      danger: ["very_low"]
     },
     customThreshold: {},
     requires: ["origin"],
