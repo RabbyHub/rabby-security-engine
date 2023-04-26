@@ -68,7 +68,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 被 Rabby 标记为欺诈网址
     id: "1001",
     enable: true,
-    valueDescription: "Site has been flagged as fraudulent by Rabby",
+    valueDescription: "Site has been flagged as phishing by Rabby",
     valueDefine: {
       type: "boolean",
     },
@@ -87,7 +87,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 被 MetaMask 标记为欺诈网址
     id: "1002",
     enable: true,
-    valueDescription: "Site has been flagged as fraudulent by MetaMask",
+    valueDescription: "Site has been flagged as phishing by MetaMask",
     valueDefine: {
       type: "boolean",
     },
@@ -106,7 +106,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 被 ScamSniffer 标记为欺诈网址
     id: "1003",
     enable: true,
-    valueDescription: "Site has been flagged as fraudulent by ScamSniffer",
+    valueDescription: "Site has been flagged as phishing by ScamSniffer",
     valueDefine: {
       type: "boolean",
     },
