@@ -1,6 +1,6 @@
 {
   "name": "@debank/rabby-security-engine",
-  "version": "1.0.2",
+  "version": "1.0.14",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@debank/common": "^0.2.31",
-    "@debank/rabby-api": "^0.5.24"
+    "@debank/rabby-api": "^0.5.25"
   },
   "peerDependencies": {
     "@debank/common": "^0.2.x",

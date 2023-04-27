@@ -9,6 +9,7 @@ export interface UserData {
 export interface ContextActionData {
   origin?: {
     communityCount: number;
+    popularLevel: string;
     url: string;
   };
 }
@@ -17,7 +18,7 @@ export interface Context extends ContextActionData {
   userData: UserData;
 }
 
-interface NumberValue {
+export interface NumberValue {
   min: number | null; // 最小值
   minIncluded: boolean; // boolean, 最小值是否为小于等于
   max: number | null; // 最大值，null 代表无限大（小）
@@ -44,6 +45,7 @@ export enum Level {
   DANGER = "danger",
   FORBIDDEN = "forbidden",
   ERROR = "error",
+  CLOSED = 'closed',
 }
 
 export type Threshold = {
@@ -66,7 +68,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 被 Rabby 标记为欺诈网址
     id: "1001",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site has been flagged as phishing by Rabby",
     valueDefine: {
       type: "boolean",
     },
@@ -76,14 +78,16 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ["origin"],
     async getValue(ctx, apiService) {
-      // TODO
+      const origin = ctx.origin!;
+      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'rabby');
+      return is_scam;
     },
   },
   {
     // Origin 被 MetaMask 标记为欺诈网址
     id: "1002",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site has been flagged as phishing by MetaMask",
     valueDefine: {
       type: "boolean",
     },
@@ -93,14 +97,16 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ["origin"],
     async getValue(ctx, apiService) {
-      // TODO
+      const origin = ctx.origin!;
+      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'metamask');
+      return is_scam;
     },
   },
   {
     // Origin 被 ScamSniffer 标记为欺诈网址
     id: "1003",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site has been flagged as phishing by ScamSniffer",
     valueDefine: {
       type: "boolean",
     },
@@ -110,14 +116,16 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ["origin"],
     async getValue(ctx, apiService) {
-      // TODO
+      const origin = ctx.origin!;
+      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'scamsniffer');
+      return is_scam;
     },
   },
   {
     // Origin 被知名社区平台收录数
     id: "1004",
     enable: true,
-    valueDescription: "",
+    valueDescription: "The number of community platforms that have listed this site",
     valueDefine: {
       type: "int",
       min: 0,
@@ -128,7 +136,7 @@ export const defaultRules: RuleConfig[] = [
     defaultThreshold: {
       danger: {
         max: 0,
-        maxIncluded: false,
+        maxIncluded: true,
         min: null,
         minIncluded: false,
       },
@@ -141,40 +149,41 @@ export const defaultRules: RuleConfig[] = [
     },
     customThreshold: {},
     requires: ["origin"],
-    async getValue(ctx, apiService) {
-      // TODO
+    async getValue(ctx) {
+      const origin = ctx.origin!;
+      return origin.communityCount;
     },
   },
   {
     // Origin 使用人数
     id: "1005",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site popularity",
     valueDefine: {
       type: "enum",
-      list: ["very_low", "low", "average", "high"],
+      list: ["very_low", "low", "medium", "high"],
       display: {
         very_low: "Very Low",
         low: "Low",
-        average: "Average",
+        medium: "Medium",
         high: "High",
       },
     },
     defaultThreshold: {
-      danger: ["very_low"],
-      warning: ["low"],
+      danger: ["very_low"]
     },
     customThreshold: {},
     requires: ["origin"],
-    async getValue(ctx, apiService) {
-      // TODO
+    async getValue(ctx) {
+      const origin = ctx.origin!;
+      return origin.popularLevel;
     },
   },
   {
     // Origin 在用户黑名单中
     id: "1006",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site has been added to your blacklist",
     valueDefine: {
       type: "boolean",
     },
@@ -193,7 +202,7 @@ export const defaultRules: RuleConfig[] = [
     // Origin 在用户白名单中
     id: "1007",
     enable: true,
-    valueDescription: "",
+    valueDescription: "Site has been added to your whitelist",
     valueDefine: {
       type: "boolean",
     },
@@ -203,7 +212,7 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ["origin"],
     async getValue(ctx) {
-      return ctx.userData.originBlacklist.some((item) =>
+      return ctx.userData.originWhitelist.some((item) =>
         caseInsensitiveCompare(item, ctx.origin!.url)
       );
     },
