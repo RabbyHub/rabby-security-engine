@@ -1,9 +1,19 @@
 import { OpenApiService } from "@debank/rabby-api";
 import { caseInsensitiveCompare } from "./utils";
+import { TokenItem } from "@debank/rabby-api/dist/types";
+
+export interface ContractAddress {
+  chainId: string;
+  address: string;
+}
 
 export interface UserData {
   originWhitelist: string[];
   originBlacklist: string[];
+  contractWhitelist: ContractAddress[];
+  contractBlacklist: ContractAddress[];
+  addressWhitelist: string[];
+  addressBlacklist: string[];
 }
 
 export interface ContextActionData {
@@ -11,6 +21,16 @@ export interface ContextActionData {
     communityCount: number;
     popularLevel: string;
     url: string;
+  };
+  swap?: {
+    receiveTokenIsScam: boolean;
+    receiveTokenIsFake: boolean;
+    receiver: string;
+    from: string;
+    slippageTolerance: number;
+    usdValuePercentage: number;
+    chainId: string;
+    contractAddress: string;
   };
 }
 
@@ -45,7 +65,7 @@ export enum Level {
   DANGER = "danger",
   FORBIDDEN = "forbidden",
   ERROR = "error",
-  CLOSED = 'closed',
+  CLOSED = "closed",
 }
 
 export type Threshold = {
@@ -79,7 +99,7 @@ export const defaultRules: RuleConfig[] = [
     requires: ["origin"],
     async getValue(ctx, apiService) {
       const origin = ctx.origin!;
-      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'rabby');
+      const { is_scam } = await apiService.getOriginIsScam(origin.url, "rabby");
       return is_scam;
     },
   },
@@ -98,7 +118,10 @@ export const defaultRules: RuleConfig[] = [
     requires: ["origin"],
     async getValue(ctx, apiService) {
       const origin = ctx.origin!;
-      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'metamask');
+      const { is_scam } = await apiService.getOriginIsScam(
+        origin.url,
+        "metamask"
+      );
       return is_scam;
     },
   },
@@ -117,7 +140,10 @@ export const defaultRules: RuleConfig[] = [
     requires: ["origin"],
     async getValue(ctx, apiService) {
       const origin = ctx.origin!;
-      const { is_scam } = await apiService.getOriginIsScam(origin.url, 'scamsniffer');
+      const { is_scam } = await apiService.getOriginIsScam(
+        origin.url,
+        "scamsniffer"
+      );
       return is_scam;
     },
   },
@@ -125,7 +151,8 @@ export const defaultRules: RuleConfig[] = [
     // Origin 被知名社区平台收录数
     id: "1004",
     enable: true,
-    valueDescription: "The number of community platforms that have listed this site",
+    valueDescription:
+      "The number of community platforms that have listed this site",
     valueDefine: {
       type: "int",
       min: 0,
@@ -170,7 +197,7 @@ export const defaultRules: RuleConfig[] = [
       },
     },
     defaultThreshold: {
-      danger: ["very_low"]
+      danger: ["very_low"],
     },
     customThreshold: {},
     requires: ["origin"],
@@ -214,6 +241,193 @@ export const defaultRules: RuleConfig[] = [
     async getValue(ctx) {
       return ctx.userData.originWhitelist.some((item) =>
         caseInsensitiveCompare(item, ctx.origin!.url)
+      );
+    },
+  },
+  {
+    // receive token 是否被标记为假资产
+    id: "1008",
+    enable: true,
+    valueDescription: "receive token 是否被标记为假资产",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ["swap"],
+    async getValue(ctx) {
+      return ctx.swap!.receiveTokenIsFake;
+    },
+  },
+  {
+    // receive token 是否被标记为垃圾资产
+    id: "1009",
+    enable: true,
+    valueDescription: "receive token 是否被标记为垃圾资产",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      warning: true,
+    },
+    customThreshold: {},
+    requires: ["swap"],
+    async getValue(ctx) {
+      return ctx.swap!.receiveTokenIsScam;
+    },
+  },
+  {
+    // receiver 是其他地址且不在白名单
+    id: "1010",
+    enable: true,
+    valueDescription: "receiver 是其他地址且不在白名单",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ["swap"],
+    async getValue(ctx) {
+      const { receiver, from } = ctx.swap!;
+      return !(
+        caseInsensitiveCompare(from, receiver) ||
+        ctx.userData.addressWhitelist.includes(receiver.toLowerCase())
+      );
+    },
+  },
+  {
+    // 交易滑点
+    id: "1011",
+    enable: true,
+    valueDescription: "交易滑点",
+    valueDefine: {
+      type: "float",
+      min: null,
+      minIncluded: false,
+      max: 1,
+      maxIncluded: true,
+    },
+    defaultThreshold: {
+      danger: {
+        max: null,
+        maxIncluded: false,
+        min: 0.2,
+        minIncluded: false,
+      },
+      warning: {
+        max: 0.2,
+        maxIncluded: true,
+        min: 0.1,
+        minIncluded: true,
+      },
+    },
+    customThreshold: {},
+    requires: ["swap"],
+    async getValue(ctx) {
+      const { slippageTolerance } = ctx.swap!;
+      return slippageTolerance;
+    },
+  },
+  {
+    // 美元价值变化
+    id: "1012",
+    enable: true,
+    valueDescription: "美元价值变化",
+    valueDefine: {
+      type: "float",
+      min: -1,
+      minIncluded: true,
+      max: 1,
+      maxIncluded: true,
+    },
+    defaultThreshold: {
+      danger: {
+        max: -0.2,
+        maxIncluded: false,
+        min: -1,
+        minIncluded: true,
+      },
+      warning: {
+        max: -0.1,
+        maxIncluded: true,
+        min: -0.2,
+        minIncluded: true,
+      },
+    },
+    customThreshold: {},
+    requires: ["swap"],
+    async getValue(ctx) {
+      const { usdValuePercentage } = ctx.swap!;
+      return usdValuePercentage;
+    },
+  },
+  {
+    // 交互合约在用户合约白名单
+    id: "1013",
+    enable: true,
+    valueDescription: "交互合约在用户合约白名单",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      safe: true,
+    },
+    customThreshold: {},
+    requires: ["swap"],
+    async getValue(ctx) {
+      const { chainId, contractAddress } = ctx.swap!;
+      return ctx.userData.contractWhitelist.find(
+        (item) =>
+          item.chainId === chainId &&
+          caseInsensitiveCompare(item.address, contractAddress)
+      );
+    },
+  },
+  {
+    // 交互合约在用户合约黑名单且在当前链上
+    id: "1014",
+    enable: true,
+    valueDescription: "交互合约在用户合约黑名单且在当前链上",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      forbidden: true,
+    },
+    customThreshold: {},
+    requires: ["swap"],
+    async getValue(ctx) {
+      const { chainId, contractAddress } = ctx.swap!;
+      return ctx.userData.contractBlacklist.find(
+        (item) =>
+          item.chainId === chainId &&
+          caseInsensitiveCompare(item.address, contractAddress)
+      );
+    },
+  },
+  {
+    // 交互合约在用户合约黑名单且不在当前链上
+    id: "1015",
+    enable: true,
+    valueDescription: "交互合约在用户合约黑名单且不在当前链上",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      warning: true,
+    },
+    customThreshold: {},
+    requires: ["swap"],
+    async getValue(ctx) {
+      const { chainId, contractAddress } = ctx.swap!;
+      return ctx.userData.contractBlacklist.find(
+        (item) =>
+          item.chainId !== chainId &&
+          caseInsensitiveCompare(item.address, contractAddress)
       );
     },
   },
