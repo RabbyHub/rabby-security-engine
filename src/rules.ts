@@ -134,16 +134,10 @@ export const defaultRules: RuleConfig[] = [
       maxIncluded: true,
     },
     defaultThreshold: {
-      danger: {
+      warning: {
         max: 0,
         maxIncluded: true,
         min: null,
-        minIncluded: false,
-      },
-      warning: {
-        max: 1,
-        maxIncluded: true,
-        min: 0,
         minIncluded: false,
       },
     },
