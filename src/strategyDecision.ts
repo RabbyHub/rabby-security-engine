@@ -79,6 +79,13 @@ const strategyDecision = (
       });
       return getFinalRiskLevel(list);
     }
+    case "percent": {
+      const list = Object.keys(thresholds).filter((key) => {
+        const threshold: NumberDefine = thresholds[key];
+        return numberThresholdCheck(Math.floor(value as number), threshold);
+      });
+      return getFinalRiskLevel(list);
+    }
   }
 };
 

@@ -32,6 +32,30 @@ export interface ContextActionData {
     chainId: string;
     contractAddress: string;
   };
+  send?: {
+    to: string;
+    hasTransfer: boolean;
+    contract: {
+      chains: string[];
+    } | null;
+    chainId: string;
+    cex: {
+      id: string;
+      isDeposit: boolean;
+      supportToken?: boolean;
+    } | null;
+    isTokenContract: boolean;
+    usedChainList: string[];
+  };
+  tokenApprove?: {
+    chainId: string;
+    spender: string;
+    isEOA: boolean;
+    riskExposure: number;
+    deployDays: number;
+    hasInteracted: boolean;
+    isDanger: boolean;
+  };
 }
 
 export interface Context extends ContextActionData {
@@ -46,7 +70,7 @@ export interface NumberValue {
 }
 
 export interface NumberDefine extends NumberValue {
-  type: "int" | "float";
+  type: "int" | "float" | "percent";
 }
 
 export interface BooleanDefine {
@@ -305,23 +329,23 @@ export const defaultRules: RuleConfig[] = [
     enable: true,
     valueDescription: "交易滑点",
     valueDefine: {
-      type: "float",
+      type: "percent",
       min: null,
       minIncluded: false,
-      max: 1,
+      max: 100,
       maxIncluded: true,
     },
     defaultThreshold: {
       danger: {
-        max: null,
-        maxIncluded: false,
-        min: 0.2,
+        max: 100,
+        maxIncluded: true,
+        min: 20,
         minIncluded: false,
       },
       warning: {
-        max: 0.2,
+        max: 20,
         maxIncluded: true,
-        min: 0.1,
+        min: 10,
         minIncluded: true,
       },
     },
@@ -329,7 +353,7 @@ export const defaultRules: RuleConfig[] = [
     requires: ["swap"],
     async getValue(ctx) {
       const { slippageTolerance } = ctx.swap!;
-      return slippageTolerance;
+      return slippageTolerance * 100;
     },
   },
   {
@@ -338,23 +362,23 @@ export const defaultRules: RuleConfig[] = [
     enable: true,
     valueDescription: "美元价值变化",
     valueDefine: {
-      type: "float",
-      min: -1,
+      type: "percent",
+      min: -100,
       minIncluded: true,
-      max: 1,
-      maxIncluded: true,
+      max: null,
+      maxIncluded: false,
     },
     defaultThreshold: {
       danger: {
-        max: -0.2,
+        max: -20,
         maxIncluded: false,
-        min: -1,
+        min: -100,
         minIncluded: true,
       },
       warning: {
-        max: -0.1,
+        max: -10,
         maxIncluded: true,
-        min: -0.2,
+        min: -20,
         minIncluded: true,
       },
     },
@@ -362,29 +386,7 @@ export const defaultRules: RuleConfig[] = [
     requires: ["swap"],
     async getValue(ctx) {
       const { usdValuePercentage } = ctx.swap!;
-      return usdValuePercentage;
-    },
-  },
-  {
-    // 交互合约在用户合约白名单
-    id: "1013",
-    enable: true,
-    valueDescription: "交互合约在用户合约白名单",
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      safe: true,
-    },
-    customThreshold: {},
-    requires: ["swap"],
-    async getValue(ctx) {
-      const { chainId, contractAddress } = ctx.swap!;
-      return ctx.userData.contractWhitelist.find(
-        (item) =>
-          item.chainId === chainId &&
-          caseInsensitiveCompare(item.address, contractAddress)
-      );
+      return usdValuePercentage * 100;
     },
   },
   {
@@ -402,7 +404,7 @@ export const defaultRules: RuleConfig[] = [
     requires: ["swap"],
     async getValue(ctx) {
       const { chainId, contractAddress } = ctx.swap!;
-      return ctx.userData.contractBlacklist.find(
+      return ctx.userData.contractBlacklist.some(
         (item) =>
           item.chainId === chainId &&
           caseInsensitiveCompare(item.address, contractAddress)
@@ -424,11 +426,359 @@ export const defaultRules: RuleConfig[] = [
     requires: ["swap"],
     async getValue(ctx) {
       const { chainId, contractAddress } = ctx.swap!;
-      return ctx.userData.contractBlacklist.find(
+      return ctx.userData.contractBlacklist.some(
         (item) =>
           item.chainId !== chainId &&
           caseInsensitiveCompare(item.address, contractAddress)
       );
+    },
+  },
+  {
+    // Receive 地址是一个 Token 合约地址
+    id: "1016",
+    enable: true,
+    valueDescription: "Receive 地址是一个 Token 合约地址",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ["send"],
+    async getValue(ctx) {
+      const { isTokenContract } = ctx.send!;
+      return isTokenContract;
+    },
+  },
+  {
+    // Receive 地址在当前链没有交易历史
+    id: "1017",
+    enable: true,
+    valueDescription: "Receive 地址在当前链没有交易历史",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      warning: true,
+    },
+    customThreshold: {},
+    requires: ["send"],
+    async getValue(ctx) {
+      const { usedChainList, chainId } = ctx.send!;
+      return !usedChainList.includes(chainId);
+    },
+  },
+  {
+    // 有给 Receive 地址转账过的记录
+    id: "1018",
+    enable: true,
+    valueDescription: "有给 Receive 地址转账过的记录",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      warning: false,
+    },
+    customThreshold: {},
+    requires: ["send"],
+    async getValue(ctx) {
+      const { hasTransfer } = ctx.send!;
+      return hasTransfer;
+    },
+  },
+  {
+    // Receive 地址是其他链上的合约地址
+    id: "1019",
+    enable: true,
+    valueDescription: "Receive 地址是其他链上的合约地址",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ["send"],
+    async getValue(ctx) {
+      const { contract, chainId } = ctx.send!;
+      if (!contract) return false;
+      return !contract.chains.includes(chainId);
+    },
+  },
+  {
+    // Receive 地址是交易所充值地址且不支持该 Token
+    id: "1020",
+    enable: true,
+    valueDescription: "Receive 地址是交易所充值地址且不支持该 Token",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ["send"],
+    async getValue(ctx) {
+      const { cex } = ctx.send!;
+      if (!cex) return false;
+      return !cex.supportToken;
+    },
+  },
+  {
+    // Receive 地址是交易所地址但不是充值地址
+    id: "1021",
+    enable: true,
+    valueDescription: "Receive 地址是交易所地址但不是充值地址",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ["send"],
+    async getValue(ctx) {
+      const { cex } = ctx.send!;
+      if (!cex) return false;
+      return cex && !cex.isDeposit;
+    },
+  },
+  {
+    // Receive 地址在用户黑名单中
+    id: "1031",
+    enable: true,
+    valueDescription: "Receive 地址在用户黑名单中",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      forbidden: true,
+    },
+    customThreshold: {},
+    requires: ["send"],
+    async getValue(ctx) {
+      const { to } = ctx.send!;
+      const { addressBlacklist } = ctx.userData;
+      return addressBlacklist.includes(to.toLowerCase());
+    },
+  },
+  {
+    // Receive 地址在用户黑名单中
+    id: "1032",
+    enable: true,
+    valueDescription: "Receive 地址在用户黑名单中",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      forbidden: true,
+    },
+    customThreshold: {},
+    requires: ["send"],
+    async getValue(ctx) {
+      const { to } = ctx.send!;
+      const { addressBlacklist } = ctx.userData;
+      return addressBlacklist.includes(to.toLowerCase());
+    },
+  },
+  {
+    // Receive 地址在用户白名单中
+    id: "1033",
+    enable: true,
+    valueDescription: "Receive 地址在用户白名单中",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      safe: true,
+    },
+    customThreshold: {},
+    requires: ["send"],
+    async getValue(ctx) {
+      const { to } = ctx.send!;
+      const { addressWhitelist } = ctx.userData;
+      return addressWhitelist.includes(to.toLowerCase());
+    },
+  },
+  {
+    // Spender 是否为 EOA 地址
+    id: "1022",
+    enable: true,
+    valueDescription: "Spender 是否为 EOA 地址",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ["tokenApprove"],
+    async getValue(ctx) {
+      const { isEOA } = ctx.tokenApprove!;
+      return isEOA;
+    },
+  },
+  {
+    // Spender 风险敞口
+    id: "1023",
+    enable: true,
+    valueDescription: "Spender 风险敞口",
+    valueDefine: {
+      type: "int",
+      min: 0,
+      minIncluded: true,
+      max: null,
+      maxIncluded: false,
+    },
+    defaultThreshold: {
+      danger: {
+        min: 0,
+        minIncluded: true,
+        max: 10000,
+        maxIncluded: true,
+      },
+      warning: {
+        min: 10000,
+        minIncluded: false,
+        max: 50000,
+        maxIncluded: true,
+      }
+    },
+    customThreshold: {},
+    requires: ["tokenApprove"],
+    async getValue(ctx) {
+      const data = ctx.tokenApprove!;
+      return data.riskExposure;
+    },
+  },
+  {
+    // Spender 合约部署时间
+    id: "1024",
+    enable: true,
+    valueDescription: "Spender 合约部署时间",
+    valueDefine: {
+      type: "int",
+      min: 0,
+      minIncluded: true,
+      max: null,
+      maxIncluded: false,
+    },
+    defaultThreshold: {
+      warning: {
+        min: 0,
+        minIncluded: true,
+        max: 30,
+        maxIncluded: true,
+      }
+    },
+    customThreshold: {},
+    requires: ["tokenApprove"],
+    async getValue(ctx) {
+      const data = ctx.tokenApprove!;
+      return data.deployDays;
+    },
+  },
+  {
+    // 当前地址跟 Spender 交互过
+    id: "1025",
+    enable: true,
+    valueDescription: "当前地址跟 Spender 交互过",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      warning: false,
+    },
+    customThreshold: {},
+    requires: ["tokenApprove"],
+    async getValue(ctx) {
+      const { hasInteracted } = ctx.tokenApprove!;
+      return hasInteracted;
+    },
+  },
+  {
+    // Spender 在用户合约白名单
+    id: "1026",
+    enable: true,
+    valueDescription: "Spender 在用户合约白名单",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      safe: true,
+    },
+    customThreshold: {},
+    requires: ["tokenApprove"],
+    async getValue(ctx) {
+      const { spender, chainId } = ctx.tokenApprove!;
+      return ctx.userData.contractWhitelist.some(
+        (item) =>
+          item.chainId === chainId &&
+          caseInsensitiveCompare(item.address, spender)
+      );
+    },
+  },
+  {
+    // Spender 在用户合约黑名单且在当前链上
+    id: "1027",
+    enable: true,
+    valueDescription: "Spender 在用户合约黑名单且在当前链上",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      forbidden: true,
+    },
+    customThreshold: {},
+    requires: ["tokenApprove"],
+    async getValue(ctx) {
+      const { spender, chainId } = ctx.tokenApprove!;
+      return ctx.userData.contractBlacklist.some(
+        (item) =>
+          item.chainId === chainId &&
+          caseInsensitiveCompare(item.address, spender)
+      );
+    },
+  },
+  {
+    // Spender 在用户合约黑名单且不在当前链上
+    id: "1028",
+    enable: true,
+    valueDescription: "Spender 在用户合约黑名单且不在当前链上",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      warning: true,
+    },
+    customThreshold: {},
+    requires: ["tokenApprove"],
+    async getValue(ctx) {
+      const { chainId, spender } = ctx.tokenApprove!;
+      return ctx.userData.contractBlacklist.some(
+        (item) =>
+          item.chainId !== chainId &&
+          caseInsensitiveCompare(item.address, spender)
+      );
+    },
+  },
+  {
+    // Spender 合约是风险合约
+    id: "1029",
+    enable: true,
+    valueDescription: "Spender 合约是风险合约",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ["tokenApprove"],
+    async getValue(ctx) {
+      const { isDanger } = ctx.tokenApprove!;
+      return isDanger;
     },
   },
 ];
