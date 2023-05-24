@@ -1,6 +1,5 @@
 import { OpenApiService } from "@debank/rabby-api";
 import { caseInsensitiveCompare } from "./utils";
-import { TokenItem } from "@debank/rabby-api/dist/types";
 
 export interface ContractAddress {
   chainId: string;
@@ -46,6 +45,7 @@ export interface ContextActionData {
     } | null;
     isTokenContract: boolean;
     usedChainList: string[];
+    onTransferWhitelist: boolean;
   };
   tokenApprove?: {
     chainId: string;
@@ -558,27 +558,8 @@ export const defaultRules: RuleConfig[] = [
     },
   },
   {
-    // Receive 地址在用户黑名单中
-    id: "1032",
-    enable: true,
-    valueDescription: "Receive 地址在用户黑名单中",
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      forbidden: true,
-    },
-    customThreshold: {},
-    requires: ["send"],
-    async getValue(ctx) {
-      const { to } = ctx.send!;
-      const { addressBlacklist } = ctx.userData;
-      return addressBlacklist.includes(to.toLowerCase());
-    },
-  },
-  {
     // Receive 地址在用户白名单中
-    id: "1033",
+    id: "1032",
     enable: true,
     valueDescription: "Receive 地址在用户白名单中",
     valueDefine: {
@@ -593,6 +574,24 @@ export const defaultRules: RuleConfig[] = [
       const { to } = ctx.send!;
       const { addressWhitelist } = ctx.userData;
       return addressWhitelist.includes(to.toLowerCase());
+    },
+  },
+  {
+    // Receive 地址在用户转账白名单中
+    id: "1033",
+    enable: true,
+    valueDescription: "Receive 地址在用户转账白名单中",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      safe: true,
+    },
+    customThreshold: {},
+    requires: ["send"],
+    async getValue(ctx) {
+      const { onTransferWhitelist } = ctx.send!;
+      return onTransferWhitelist;
     },
   },
   {
