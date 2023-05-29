@@ -390,7 +390,10 @@ export const defaultRules: RuleConfig[] = [
     customThreshold: {},
     requires: ["swap"],
     async getValue(ctx) {
-      const { slippageTolerance } = ctx.swap!;
+      const { slippageTolerance, receiver, from } = ctx.swap!;
+      if (!caseInsensitiveCompare(from, receiver)) {
+        return 0;
+      }
       return slippageTolerance * 100;
     },
   },
