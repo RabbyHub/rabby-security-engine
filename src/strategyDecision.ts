@@ -8,8 +8,14 @@ const getFinalRiskLevel = (levels: string[]) => {
   return null;
 };
 
-const numberThresholdCheck = (value: number, threshold: NumberDefine) => {
+const numberThresholdCheck = (
+  value: number | null,
+  threshold: NumberDefine
+) => {
   const { max, min, minIncluded, maxIncluded } = threshold;
+  if (value === null) {
+    return false;
+  }
   if (max === null || min === null) {
     if (max === null && min !== null) {
       // 无限大但不无限小
@@ -29,7 +35,7 @@ const numberThresholdCheck = (value: number, threshold: NumberDefine) => {
       // 无限区间
       return true;
     }
-  }  else {
+  } else {
     if (maxIncluded && minIncluded) {
       // [min, max]
       return max >= value && min <= value;
@@ -71,7 +77,7 @@ const strategyDecision = (
       });
       return getFinalRiskLevel(list);
     }
-    case "int": 
+    case "int":
     case "float": {
       const list = Object.keys(thresholds).filter((key) => {
         const threshold: NumberDefine = thresholds[key];
@@ -82,7 +88,10 @@ const strategyDecision = (
     case "percent": {
       const list = Object.keys(thresholds).filter((key) => {
         const threshold: NumberDefine = thresholds[key];
-        return numberThresholdCheck(Math.floor(value as number), threshold);
+        return numberThresholdCheck(
+          value === null ? null : Math.floor(value as number),
+          threshold
+        );
       });
       return getFinalRiskLevel(list);
     }

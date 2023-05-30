@@ -27,7 +27,7 @@ export interface ContextActionData {
     receiver: string;
     from: string;
     slippageTolerance: number;
-    usdValuePercentage: number;
+    usdValuePercentage: number | null;
     chainId: string;
     contractAddress: string;
   };
@@ -362,6 +362,28 @@ export const defaultRules: RuleConfig[] = [
     },
   },
   {
+    // receiver 是否为其他地址且被标记成“拉黑”
+    id: "1066",
+    enable: true,
+    valueDescription:
+      'Recipient address does not match current address and is marked as "Blocked" by you',
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      forbidden: true,
+    },
+    customThreshold: {},
+    requires: ["swap"],
+    async getValue(ctx) {
+      const { receiver, from } = ctx.swap!;
+      return (
+        !caseInsensitiveCompare(from, receiver) &&
+        ctx.userData.addressBlacklist.includes(receiver.toLowerCase())
+      );
+    },
+  },
+  {
     // 交易滑点
     id: "1011",
     enable: true,
@@ -427,6 +449,7 @@ export const defaultRules: RuleConfig[] = [
     requires: ["swap"],
     async getValue(ctx) {
       const { usdValuePercentage } = ctx.swap!;
+      if (usdValuePercentage === null) return null;
       return usdValuePercentage * 100;
     },
   },
@@ -1054,7 +1077,7 @@ export const defaultRules: RuleConfig[] = [
     requires: ["nftApprove"],
     async getValue(ctx) {
       const data = ctx.nftApprove!;
-      return data.deployDays;
+      return data.deployDays || 0;
     },
   },
   {
@@ -1236,7 +1259,7 @@ export const defaultRules: RuleConfig[] = [
     requires: ["collectionApprove"],
     async getValue(ctx) {
       const data = ctx.collectionApprove!;
-      return data.deployDays;
+      return data.deployDays || 0;
     },
   },
   {
