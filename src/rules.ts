@@ -340,50 +340,6 @@ export const defaultRules: RuleConfig[] = [
     },
   },
   {
-    // receiver 是其他地址且不在白名单
-    id: "1010",
-    enable: true,
-    valueDescription:
-      'Recipient address does not match current address or is not marked as "Trusted" by you',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      danger: true,
-    },
-    customThreshold: {},
-    requires: ["swap"],
-    async getValue(ctx) {
-      const { receiver, from } = ctx.swap!;
-      return !(
-        caseInsensitiveCompare(from, receiver) ||
-        ctx.userData.addressWhitelist.includes(receiver.toLowerCase())
-      );
-    },
-  },
-  {
-    // receiver 是否为其他地址且被标记成“拉黑”
-    id: "1066",
-    enable: true,
-    valueDescription:
-      'Recipient address does not match current address and is marked as "Blocked" by you',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      forbidden: true,
-    },
-    customThreshold: {},
-    requires: ["swap"],
-    async getValue(ctx) {
-      const { receiver, from } = ctx.swap!;
-      return (
-        !caseInsensitiveCompare(from, receiver) &&
-        ctx.userData.addressBlacklist.includes(receiver.toLowerCase())
-      );
-    },
-  },
-  {
     // 交易滑点
     id: "1011",
     enable: true,
@@ -454,48 +410,21 @@ export const defaultRules: RuleConfig[] = [
     },
   },
   {
-    // 交互合约在用户合约黑名单且在当前链上
-    id: "1014",
+    // receiver 是其他地址
+    id: "1069",
     enable: true,
-    valueDescription: 'Contract is mark as "blocked" by you on this chain',
+    valueDescription: "Recipient address does not match current address",
     valueDefine: {
       type: "boolean",
     },
     defaultThreshold: {
-      forbidden: true,
+      danger: true,
     },
     customThreshold: {},
     requires: ["swap"],
     async getValue(ctx) {
-      const { chainId, contractAddress } = ctx.swap!;
-      return ctx.userData.contractBlacklist.some(
-        (item) =>
-          item.chainId === chainId &&
-          caseInsensitiveCompare(item.address, contractAddress)
-      );
-    },
-  },
-  {
-    // 交互合约在用户合约黑名单且不在当前链上
-    id: "1015",
-    enable: true,
-    valueDescription:
-      'Contract is mark as "blocked" by you on a different chain.',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: true,
-    },
-    customThreshold: {},
-    requires: ["swap"],
-    async getValue(ctx) {
-      const { chainId, contractAddress } = ctx.swap!;
-      return ctx.userData.contractBlacklist.some(
-        (item) =>
-          item.chainId !== chainId &&
-          caseInsensitiveCompare(item.address, contractAddress)
-      );
+      const { receiver, from } = ctx.swap!;
+      return !caseInsensitiveCompare(from, receiver);
     },
   },
   {
@@ -613,44 +542,6 @@ export const defaultRules: RuleConfig[] = [
     },
   },
   {
-    // Receive 地址在用户黑名单中
-    id: "1031",
-    enable: true,
-    valueDescription: 'Recipient address is mark as "blocked" by you',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      forbidden: true,
-    },
-    customThreshold: {},
-    requires: ["send"],
-    async getValue(ctx) {
-      const { to } = ctx.send!;
-      const { addressBlacklist } = ctx.userData;
-      return addressBlacklist.includes(to.toLowerCase());
-    },
-  },
-  {
-    // Receive 地址在用户白名单中
-    id: "1032",
-    enable: true,
-    valueDescription: 'Recipient address is mark as "trusted" by you',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      safe: true,
-    },
-    customThreshold: {},
-    requires: ["send"],
-    async getValue(ctx) {
-      const { to } = ctx.send!;
-      const { addressWhitelist } = ctx.userData;
-      return addressWhitelist.includes(to.toLowerCase());
-    },
-  },
-  {
     // Receive 地址在用户转账白名单中
     id: "1033",
     enable: true,
@@ -735,7 +626,7 @@ export const defaultRules: RuleConfig[] = [
       warning: {
         min: 0,
         minIncluded: true,
-        max: 30,
+        max: 3,
         maxIncluded: true,
       },
     },
@@ -762,74 +653,6 @@ export const defaultRules: RuleConfig[] = [
     async getValue(ctx) {
       const { hasInteracted } = ctx.tokenApprove!;
       return hasInteracted;
-    },
-  },
-  {
-    // Spender 在用户合约白名单
-    id: "1026",
-    enable: true,
-    valueDescription: 'Spender address is marked as "Trusted" by you',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      safe: true,
-    },
-    customThreshold: {},
-    requires: ["tokenApprove"],
-    async getValue(ctx) {
-      const { spender, chainId } = ctx.tokenApprove!;
-      return ctx.userData.contractWhitelist.some(
-        (item) =>
-          item.chainId === chainId &&
-          caseInsensitiveCompare(item.address, spender)
-      );
-    },
-  },
-  {
-    // Spender 在用户合约黑名单且在当前链上
-    id: "1027",
-    enable: true,
-    valueDescription:
-      'Spender address is mark as "blocked" by you on this chain',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      forbidden: true,
-    },
-    customThreshold: {},
-    requires: ["tokenApprove"],
-    async getValue(ctx) {
-      const { spender, chainId } = ctx.tokenApprove!;
-      return ctx.userData.contractBlacklist.some(
-        (item) =>
-          item.chainId === chainId &&
-          caseInsensitiveCompare(item.address, spender)
-      );
-    },
-  },
-  {
-    // Spender 在用户合约黑名单且不在当前链上
-    id: "1028",
-    enable: true,
-    valueDescription:
-      'Spender address is mark as "blocked" by you on another chain',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: true,
-    },
-    customThreshold: {},
-    requires: ["tokenApprove"],
-    async getValue(ctx) {
-      const { chainId, spender } = ctx.tokenApprove!;
-      return ctx.userData.contractBlacklist.some(
-        (item) =>
-          item.chainId !== chainId &&
-          caseInsensitiveCompare(item.address, spender)
-      );
     },
   },
   {
@@ -947,44 +770,6 @@ export const defaultRules: RuleConfig[] = [
     },
   },
   {
-    // Receive 地址在用户黑名单中
-    id: "1040",
-    enable: true,
-    valueDescription: 'Recipient address is mark as "blocked" by you',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      forbidden: true,
-    },
-    customThreshold: {},
-    requires: ["sendNFT"],
-    async getValue(ctx) {
-      const { to } = ctx.sendNFT!;
-      const { addressBlacklist } = ctx.userData;
-      return addressBlacklist.includes(to.toLowerCase());
-    },
-  },
-  {
-    // Receive 地址在用户白名单中
-    id: "1041",
-    enable: true,
-    valueDescription: 'Recipient address is mark as "trusted" by you',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      safe: true,
-    },
-    customThreshold: {},
-    requires: ["sendNFT"],
-    async getValue(ctx) {
-      const { to } = ctx.sendNFT!;
-      const { addressWhitelist } = ctx.userData;
-      return addressWhitelist.includes(to.toLowerCase());
-    },
-  },
-  {
     // Receive 地址在用户转账白名单中
     id: "1042",
     enable: true,
@@ -1042,7 +827,7 @@ export const defaultRules: RuleConfig[] = [
       warning: {
         min: 10000,
         minIncluded: false,
-        max: 50000,
+        max: 100000,
         maxIncluded: true,
       },
     },
@@ -1069,7 +854,7 @@ export const defaultRules: RuleConfig[] = [
       warning: {
         min: 0,
         minIncluded: true,
-        max: 30,
+        max: 3,
         maxIncluded: true,
       },
     },
@@ -1096,74 +881,6 @@ export const defaultRules: RuleConfig[] = [
     async getValue(ctx) {
       const { hasInteracted } = ctx.nftApprove!;
       return hasInteracted;
-    },
-  },
-  {
-    // Spender 在用户合约白名单
-    id: "1049",
-    enable: true,
-    valueDescription: 'Spender address is marked as "Trusted" by you',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      safe: true,
-    },
-    customThreshold: {},
-    requires: ["nftApprove"],
-    async getValue(ctx) {
-      const { spender, chainId } = ctx.nftApprove!;
-      return ctx.userData.contractWhitelist.some(
-        (item) =>
-          item.chainId === chainId &&
-          caseInsensitiveCompare(item.address, spender)
-      );
-    },
-  },
-  {
-    // Spender 在用户合约黑名单且在当前链上
-    id: "1050",
-    enable: true,
-    valueDescription:
-      'Spender address is mark as "blocked" by you on this chain',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      forbidden: true,
-    },
-    customThreshold: {},
-    requires: ["nftApprove"],
-    async getValue(ctx) {
-      const { spender, chainId } = ctx.nftApprove!;
-      return ctx.userData.contractBlacklist.some(
-        (item) =>
-          item.chainId === chainId &&
-          caseInsensitiveCompare(item.address, spender)
-      );
-    },
-  },
-  {
-    // Spender 在用户合约黑名单且不在当前链上
-    id: "1051",
-    enable: true,
-    valueDescription:
-      'Spender address is mark as "blocked" by you on another chain',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: true,
-    },
-    customThreshold: {},
-    requires: ["nftApprove"],
-    async getValue(ctx) {
-      const { chainId, spender } = ctx.nftApprove!;
-      return ctx.userData.contractBlacklist.some(
-        (item) =>
-          item.chainId !== chainId &&
-          caseInsensitiveCompare(item.address, spender)
-      );
     },
   },
   {
@@ -1224,7 +941,7 @@ export const defaultRules: RuleConfig[] = [
       warning: {
         min: 10000,
         minIncluded: false,
-        max: 50000,
+        max: 100000,
         maxIncluded: true,
       },
     },
@@ -1251,7 +968,7 @@ export const defaultRules: RuleConfig[] = [
       warning: {
         min: 0,
         minIncluded: true,
-        max: 30,
+        max: 3,
         maxIncluded: true,
       },
     },
@@ -1278,74 +995,6 @@ export const defaultRules: RuleConfig[] = [
     async getValue(ctx) {
       const { hasInteracted } = ctx.collectionApprove!;
       return hasInteracted;
-    },
-  },
-  {
-    // Spender 在用户合约白名单
-    id: "1057",
-    enable: true,
-    valueDescription: 'Spender address is marked as "Trusted" by you',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      safe: true,
-    },
-    customThreshold: {},
-    requires: ["collectionApprove"],
-    async getValue(ctx) {
-      const { spender, chainId } = ctx.collectionApprove!;
-      return ctx.userData.contractWhitelist.some(
-        (item) =>
-          item.chainId === chainId &&
-          caseInsensitiveCompare(item.address, spender)
-      );
-    },
-  },
-  {
-    // Spender 在用户合约黑名单且在当前链上
-    id: "1058",
-    enable: true,
-    valueDescription:
-      'Spender address is mark as "blocked" by you on this chain',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      forbidden: true,
-    },
-    customThreshold: {},
-    requires: ["collectionApprove"],
-    async getValue(ctx) {
-      const { spender, chainId } = ctx.collectionApprove!;
-      return ctx.userData.contractBlacklist.some(
-        (item) =>
-          item.chainId === chainId &&
-          caseInsensitiveCompare(item.address, spender)
-      );
-    },
-  },
-  {
-    // Spender 在用户合约黑名单且不在当前链上
-    id: "1059",
-    enable: true,
-    valueDescription:
-      'Spender address is mark as "blocked" by you on another chain',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: true,
-    },
-    customThreshold: {},
-    requires: ["collectionApprove"],
-    async getValue(ctx) {
-      const { chainId, spender } = ctx.collectionApprove!;
-      return ctx.userData.contractBlacklist.some(
-        (item) =>
-          item.chainId !== chainId &&
-          caseInsensitiveCompare(item.address, spender)
-      );
     },
   },
   {
@@ -1430,49 +1079,6 @@ export const defaultRules: RuleConfig[] = [
     async getValue(ctx) {
       const { slippageTolerance } = ctx.unwrapToken!;
       return slippageTolerance * 100;
-    },
-  },
-  {
-    // 交互合约在用户合约黑名单且在当前链上
-    id: "1064",
-    enable: true,
-    valueDescription: 'Contract is mark as "blocked" by you on this chain',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      forbidden: true,
-    },
-    customThreshold: {},
-    requires: ["contractCall"],
-    async getValue(ctx) {
-      const { chainId, id } = ctx.contractCall!;
-      return ctx.userData.contractBlacklist.some(
-        (item) =>
-          item.chainId === chainId && caseInsensitiveCompare(item.address, id)
-      );
-    },
-  },
-  {
-    // 交互合约在用户合约黑名单且不在当前链上
-    id: "1065",
-    enable: true,
-    valueDescription:
-      'Contract is mark as "blocked" by you on a different chain.',
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: true,
-    },
-    customThreshold: {},
-    requires: ["contractCall"],
-    async getValue(ctx) {
-      const { chainId, id } = ctx.contractCall!;
-      return ctx.userData.contractBlacklist.some(
-        (item) =>
-          item.chainId !== chainId && caseInsensitiveCompare(item.address, id)
-      );
     },
   },
 ];

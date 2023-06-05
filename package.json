@@ -1,6 +1,6 @@
 {
   "name": "@debank/rabby-security-engine",
-  "version": "1.0.16-alpha3",
+  "version": "1.0.16-alpha6",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
