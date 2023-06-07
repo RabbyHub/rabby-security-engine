@@ -1,4 +1,4 @@
-import { RuleConfig, Level } from "./rules";
+import { RuleConfig, Level, Threshold } from "./rules";
 import strategyDecision from "./strategyDecision";
 import { OpenApiService } from "@debank/rabby-api";
 
@@ -8,6 +8,8 @@ export interface Result {
   value: any;
   valueDescription: string;
   valueDefine: RuleConfig["valueDefine"];
+  enable: boolean;
+  threshold: Threshold;
 }
 
 class Engine {
@@ -25,16 +27,7 @@ class Engine {
       this.rules.map(async (rule) => {
         const deps = rule.requires;
         if (deps.every((key) => key in ctx)) {
-          if (!rule.enable) {
-            results.push({
-              id: rule.id,
-              level: Level.CLOSED,
-              value: null,
-              valueDescription: rule.valueDescription,
-              valueDefine: rule.valueDefine,
-            })
-            return
-          }
+          const enable = rule.enable;
           try {
             const value = await rule.getValue(ctx, this.apiService);
             const riskLevel = strategyDecision(value, rule);
@@ -45,6 +38,11 @@ class Engine {
                 value,
                 valueDescription: rule.valueDescription,
                 valueDefine: rule.valueDefine,
+                enable,
+                threshold: {
+                  ...rule.defaultThreshold,
+                  ...(rule.customThreshold || {}),
+                },
               });
             }
           } catch (e) {
@@ -54,6 +52,11 @@ class Engine {
               value: null,
               valueDescription: rule.valueDescription,
               valueDefine: rule.valueDefine,
+              enable,
+              threshold: {
+                ...rule.defaultThreshold,
+                ...(rule.customThreshold || {}),
+              },
             });
           }
         }

@@ -132,7 +132,6 @@ export enum Level {
   DANGER = "danger",
   FORBIDDEN = "forbidden",
   ERROR = "error",
-  CLOSED = "closed",
 }
 
 export type Threshold = {
@@ -446,25 +445,6 @@ export const defaultRules: RuleConfig[] = [
     },
   },
   {
-    // Receive 地址在当前链没有交易历史
-    id: "1017",
-    enable: true,
-    valueDescription:
-      "Recipient address has no transaction history on this chain",
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: true,
-    },
-    customThreshold: {},
-    requires: ["send"],
-    async getValue(ctx) {
-      const { usedChainList, chainId } = ctx.send!;
-      return !usedChainList.includes(chainId);
-    },
-  },
-  {
     // 有给 Receive 地址转账过的记录
     id: "1018",
     enable: true,
@@ -627,7 +607,7 @@ export const defaultRules: RuleConfig[] = [
         min: 0,
         minIncluded: true,
         max: 3,
-        maxIncluded: true,
+        maxIncluded: false,
       },
     },
     customThreshold: {},
@@ -671,25 +651,6 @@ export const defaultRules: RuleConfig[] = [
     async getValue(ctx) {
       const { isDanger } = ctx.tokenApprove!;
       return isDanger;
-    },
-  },
-  {
-    // Receive 地址在当前链没有交易历史
-    id: "1035",
-    enable: true,
-    valueDescription:
-      "Recipient address has no transaction history on this chain",
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: true,
-    },
-    customThreshold: {},
-    requires: ["sendNFT"],
-    async getValue(ctx) {
-      const { usedChainList, chainId } = ctx.sendNFT!;
-      return !usedChainList.includes(chainId);
     },
   },
   {
@@ -855,7 +816,7 @@ export const defaultRules: RuleConfig[] = [
         min: 0,
         minIncluded: true,
         max: 3,
-        maxIncluded: true,
+        maxIncluded: false,
       },
     },
     customThreshold: {},
@@ -969,7 +930,7 @@ export const defaultRules: RuleConfig[] = [
         min: 0,
         minIncluded: true,
         max: 3,
-        maxIncluded: true,
+        maxIncluded: false,
       },
     },
     customThreshold: {},
