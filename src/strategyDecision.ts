@@ -89,7 +89,7 @@ const strategyDecision = (
       const list = Object.keys(thresholds).filter((key) => {
         const threshold: NumberDefine = thresholds[key];
         return numberThresholdCheck(
-          value === null ? null : Math.floor(value as number),
+          value === null ? null : value as number,
           threshold
         );
       });
