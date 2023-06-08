@@ -305,6 +305,25 @@ export const defaultRules: RuleConfig[] = [
     },
   },
   {
+    // Origin 在用户白名单中
+    id: "1070",
+    enable: true,
+    valueDescription: "Site has been verified by Rabby",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      safe: true,
+    },
+    customThreshold: {},
+    requires: ["origin"],
+    async getValue(ctx, apiService) {
+      const origin = ctx.origin!.url;
+      const { is_verified } = await apiService.isOriginVerified(origin);
+      return !!is_verified;
+    },
+  },
+  {
     // receive token 是否被标记为假资产
     id: "1008",
     enable: true,

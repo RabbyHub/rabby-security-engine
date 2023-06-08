@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@debank/common": "^0.2.31",
-    "@debank/rabby-api": "^0.5.25"
+    "@debank/rabby-api": "^0.5.34"
   },
   "peerDependencies": {
     "@debank/common": "^0.2.x",
