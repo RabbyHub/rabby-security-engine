@@ -54,6 +54,12 @@ describe("enum", () => {
           display: {},
         },
         valueDescription: "",
+        threshold: {
+          forbidden: ["very_low", "low"],
+          warning: ["high"],
+          safe: ["very_high"],
+        },
+        enable: true,
       },
     ]);
   });
@@ -75,6 +81,12 @@ describe("enum", () => {
           display: {},
         },
         valueDescription: "",
+        threshold: {
+          forbidden: ["very_low", "low"],
+          warning: ["high"],
+          safe: ["very_high"],
+        },
+        enable: true,
       },
     ]);
   });
@@ -96,6 +108,12 @@ describe("enum", () => {
           display: {},
         },
         valueDescription: "",
+        threshold: {
+          forbidden: ["very_low", "low"],
+          warning: ["high"],
+          safe: ["very_high"],
+        },
+        enable: true,
       },
     ]);
   });

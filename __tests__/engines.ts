@@ -58,6 +58,10 @@ describe("multi rules", () => {
         valueDefine: {
           type: "boolean",
         },
+        threshold: {
+          safe: true,
+        },
+        enable: true,
       },
       {
         id: "1002",
@@ -67,6 +71,10 @@ describe("multi rules", () => {
         valueDefine: {
           type: "boolean",
         },
+        threshold: {
+          forbidden: true,
+        },
+        enable: true,
       },
     ]);
   });
@@ -87,6 +95,10 @@ describe("multi rules", () => {
         valueDefine: {
           type: "boolean",
         },
+        threshold: {
+          safe: true,
+        },
+        enable: true,
       },
     ]);
   });
@@ -142,6 +154,11 @@ describe("multi rules", () => {
         valueDescription: "",
         valueDefine: {
           type: "boolean",
+        },
+        enable: true,
+        threshold: {
+          safe: true,
+          forbidden: true,
         },
       },
     ]);

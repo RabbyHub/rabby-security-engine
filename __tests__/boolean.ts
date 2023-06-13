@@ -40,6 +40,10 @@ describe("boolean", () => {
         valueDefine: {
           type: "boolean",
         },
+        threshold: {
+          forbidden: true,
+        },
+        enable: true,
       },
     ]);
   });
