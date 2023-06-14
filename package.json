@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "rimraf dist && tsc",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn test && yarn build"
   },
   "repository": {
     "type": "git",
