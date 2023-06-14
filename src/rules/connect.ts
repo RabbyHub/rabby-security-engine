@@ -157,7 +157,7 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Origin 在用户白名单中
+    // Origin 被 Rabby 认证过
     id: "1070",
     enable: true,
     valueDescription: "Site has been verified by Rabby",
