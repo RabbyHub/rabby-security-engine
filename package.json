@@ -1,5 +1,5 @@
 {
-  "name": "@debank/rabby-security-engine",
+  "name": "@rabby-wallet/rabby-security-engine",
   "version": "1.0.20",
   "description": "",
   "main": "dist/index.js",
