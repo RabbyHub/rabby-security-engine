@@ -1,12 +1,12 @@
 {
   "name": "@debank/rabby-security-engine",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "build": "rimraf dist && tsc",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn test && yarn build"
   },
   "repository": {
     "type": "git",

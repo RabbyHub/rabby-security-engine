@@ -67,6 +67,33 @@ describe("number threshold test", () => {
           type: "int",
         },
         valueDescription: "",
+        threshold: {
+          forbidden: {
+            min: 0,
+            minIncluded: true,
+            max: 1,
+            maxIncluded: true,
+          },
+          danger: {
+            min: 2,
+            minIncluded: true,
+            max: 5,
+            maxIncluded: false,
+          },
+          warning: {
+            min: 5,
+            minIncluded: false,
+            max: 10,
+            maxIncluded: false,
+          },
+          safe: {
+            min: 10,
+            minIncluded: true,
+            max: 50,
+            maxIncluded: false,
+          },
+        },
+        enable: true,
       },
     ]);
   });
@@ -86,6 +113,33 @@ describe("number threshold test", () => {
           type: "int",
         },
         valueDescription: "",
+        threshold: {
+          forbidden: {
+            min: 0,
+            minIncluded: true,
+            max: 1,
+            maxIncluded: true,
+          },
+          danger: {
+            min: 2,
+            minIncluded: true,
+            max: 5,
+            maxIncluded: false,
+          },
+          warning: {
+            min: 5,
+            minIncluded: false,
+            max: 10,
+            maxIncluded: false,
+          },
+          safe: {
+            min: 10,
+            minIncluded: true,
+            max: 50,
+            maxIncluded: false,
+          },
+        },
+        enable: true
       },
     ]);
   });
@@ -105,6 +159,33 @@ describe("number threshold test", () => {
           type: "int",
         },
         valueDescription: "",
+        threshold: {
+          forbidden: {
+            min: 0,
+            minIncluded: true,
+            max: 1,
+            maxIncluded: true,
+          },
+          danger: {
+            min: 2,
+            minIncluded: true,
+            max: 5,
+            maxIncluded: false,
+          },
+          warning: {
+            min: 5,
+            minIncluded: false,
+            max: 10,
+            maxIncluded: false,
+          },
+          safe: {
+            min: 10,
+            minIncluded: true,
+            max: 50,
+            maxIncluded: false,
+          },
+        },
+        enable: true
       },
     ]);
   });
@@ -124,6 +205,33 @@ describe("number threshold test", () => {
           type: "int",
         },
         valueDescription: "",
+        threshold: {
+          forbidden: {
+            min: 0,
+            minIncluded: true,
+            max: 1,
+            maxIncluded: true,
+          },
+          danger: {
+            min: 2,
+            minIncluded: true,
+            max: 5,
+            maxIncluded: false,
+          },
+          warning: {
+            min: 5,
+            minIncluded: false,
+            max: 10,
+            maxIncluded: false,
+          },
+          safe: {
+            min: 10,
+            minIncluded: true,
+            max: 50,
+            maxIncluded: false,
+          },
+        },
+        enable: true
       },
     ]);
   });
@@ -200,6 +308,33 @@ describe("number infinite test", () => {
           maxIncluded: false,
         },
         valueDescription: "",
+        threshold: {
+          forbidden: {
+            min: null,
+            minIncluded: false,
+            max: 1,
+            maxIncluded: true,
+          },
+          danger: {
+            min: 1.5,
+            minIncluded: true,
+            max: null,
+            maxIncluded: false,
+          },
+          warning: {
+            min: 5,
+            minIncluded: false,
+            max: 10,
+            maxIncluded: false,
+          },
+          safe: {
+            min: 10,
+            minIncluded: true,
+            max: 50,
+            maxIncluded: false,
+          },
+        },
+        enable: true,
       },
     ]);
   });
@@ -221,6 +356,33 @@ describe("number infinite test", () => {
           maxIncluded: false,
         },
         valueDescription: "",
+        threshold: {
+          forbidden: {
+            min: null,
+            minIncluded: false,
+            max: 1,
+            maxIncluded: true,
+          },
+          danger: {
+            min: 1.5,
+            minIncluded: true,
+            max: null,
+            maxIncluded: false,
+          },
+          warning: {
+            min: 5,
+            minIncluded: false,
+            max: 10,
+            maxIncluded: false,
+          },
+          safe: {
+            min: 10,
+            minIncluded: true,
+            max: 50,
+            maxIncluded: false,
+          },
+        },
+        enable: true,
       },
     ]);
   });
@@ -288,6 +450,33 @@ describe("number infinite test", () => {
           maxIncluded: false,
         },
         valueDescription: "",
+        threshold: {
+          forbidden: {
+            min: null,
+            minIncluded: false,
+            max: null,
+            maxIncluded: false,
+          },
+          danger: {
+            min: 1.5,
+            minIncluded: true,
+            max: null,
+            maxIncluded: false,
+          },
+          warning: {
+            min: 5,
+            minIncluded: false,
+            max: 10,
+            maxIncluded: false,
+          },
+          safe: {
+            min: 10,
+            minIncluded: true,
+            max: 50,
+            maxIncluded: false,
+          },
+        },
+        enable: true
       },
     ]);
   });
