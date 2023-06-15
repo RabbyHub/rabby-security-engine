@@ -17,6 +17,9 @@
   "bugs": {
     "url": "https://github.com/RabbyHub/rabby-security-engine/issues"
   },
+  "files": [
+    "dist"
+  ],
   "homepage": "https://github.com/RabbyHub/rabby-security-engine#readme",
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.2",
