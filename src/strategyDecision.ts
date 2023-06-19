@@ -18,21 +18,21 @@ const numberThresholdCheck = (
   }
   if (max === null || min === null) {
     if (max === null && min !== null) {
-      // 无限大但不无限小
+      // infinity but not infinitesimal
       if (minIncluded) {
         return min <= value;
       } else {
         return min < value;
       }
     } else if (max !== null && min === null) {
-      // 无限小但不无限大
+      // infinitesimal but not infinity
       if (maxIncluded) {
         return max >= value;
       } else {
         return max > value;
       }
     } else {
-      // 无限区间
+      // infinitesimal and infinity
       return true;
     }
   } else {

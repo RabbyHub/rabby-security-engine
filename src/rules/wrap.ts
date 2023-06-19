@@ -3,7 +3,6 @@ import { caseInsensitiveCompare } from "../utils";
 
 const rules: RuleConfig[] = [
   {
-    // 收到的 Wrap Token 数量和支付的原生 Token 数量偏差过大
     id: "1061",
     enable: true,
     valueDescription: "Wrap token received does not match the token paid",
@@ -36,7 +35,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // receiver 是其他地址
     id: "1092",
     enable: true,
     valueDescription: "Recipient address does not match current address",
@@ -54,7 +52,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // 收到的原生代币数量和支付的 Wrap Token 数量偏差
     id: "1062",
     enable: true,
     valueDescription: "Token received mismatch with wrap token paid",
@@ -87,7 +84,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // receiver 是其他地址
     id: "1093",
     enable: true,
     valueDescription: "Recipient address does not match current address",

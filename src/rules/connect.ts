@@ -3,7 +3,6 @@ import { caseInsensitiveCompare } from "../utils";
 
 const rules: RuleConfig[] = [
   {
-    // Origin 被 Rabby 标记为欺诈网址
     id: "1001",
     enable: true,
     valueDescription: "Site has been flagged as phishing by Rabby",
@@ -22,7 +21,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Origin 被 MetaMask 标记为欺诈网址
     id: "1002",
     enable: true,
     valueDescription: "Site has been flagged as phishing by MetaMask",
@@ -44,7 +42,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Origin 被 ScamSniffer 标记为欺诈网址
     id: "1003",
     enable: true,
     valueDescription: "Site has been flagged as phishing by ScamSniffer",
@@ -66,7 +63,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Origin 被知名社区平台收录数
     id: "1004",
     enable: true,
     valueDescription:
@@ -94,7 +90,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Origin 使用人数
     id: "1005",
     enable: true,
     valueDescription: "Site popularity",
@@ -119,7 +114,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Origin 在用户黑名单中
     id: "1006",
     enable: true,
     valueDescription: "Site has been added to your blacklist",
@@ -138,7 +132,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Origin 在用户白名单中
     id: "1007",
     enable: true,
     valueDescription: "Site has been added to your whitelist",
@@ -157,7 +150,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Origin 被 Rabby 认证过
     id: "1070",
     enable: true,
     valueDescription: "Site has been verified by Rabby",

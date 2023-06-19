@@ -3,7 +3,6 @@ import { caseInsensitiveCompare } from "../utils";
 
 const rules: RuleConfig[] = [
   {
-    // Spender 是否为 EOA 地址
     id: "1043",
     enable: true,
     valueDescription: "Spender address is an Externally Owned Account (EOA)",
@@ -21,7 +20,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Spender 风险敞口
     id: "1044",
     enable: true,
     valueDescription: "Spender address risk exposure",
@@ -54,7 +52,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Spender 合约部署时间
     id: "1045",
     enable: true,
     valueDescription: "Contract deployment duration is too short",
@@ -81,7 +78,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // 当前地址跟 Spender 交互过
     id: "1048",
     enable: true,
     valueDescription: "Have you interacted with this contract before",
@@ -99,7 +95,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Spender 合约是风险合约
     id: "1052",
     enable: true,
     valueDescription: "Spender address is a risky contract",

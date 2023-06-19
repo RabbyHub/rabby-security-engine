@@ -2,7 +2,6 @@ import { RuleConfig } from ".";
 
 const rules: RuleConfig[] = [
   {
-    // 有给 Receive 地址转账过的记录
     id: "1036",
     enable: true,
     valueDescription: "Have you transferred to this address before",
@@ -20,7 +19,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Receive 地址是其他链上的合约地址
     id: "1037",
     enable: true,
     valueDescription:
@@ -40,7 +38,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Receive 地址是交易所充值地址且不支持该 Token
     id: "1038",
     enable: true,
     valueDescription:
@@ -60,7 +57,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Receive 地址是交易所地址但不是充值地址
     id: "1039",
     enable: true,
     valueDescription: "Recipient address is a non-deposit address on a CEX",
@@ -79,7 +75,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // Receive 地址在用户转账白名单中
     id: "1042",
     enable: true,
     valueDescription: "Recipient address is in your whitelist",

@@ -2,7 +2,6 @@ import { RuleConfig } from ".";
 
 const rules: RuleConfig[] = [
   {
-    // 签名内容是否属于发起签名的网站
     id: "1088",
     enable: true,
     valueDescription:

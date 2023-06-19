@@ -186,10 +186,10 @@ export interface Context extends ContextActionData {
 }
 
 export interface NumberValue {
-  min: number | null; // 最小值
-  minIncluded: boolean; // boolean, 最小值是否为小于等于
-  max: number | null; // 最大值，null 代表无限大（小）
-  maxIncluded: boolean; // boolean, 最大值是否为大于等于
+  min: number | null; // null means infinitesimal
+  minIncluded: boolean;
+  max: number | null; // null means infinite
+  maxIncluded: boolean;
 }
 
 export interface NumberDefine extends NumberValue {
@@ -219,14 +219,14 @@ export type Threshold = {
 };
 
 export interface RuleConfig {
-  id: string; // 规则 id
-  enable: boolean; // 是否启用
-  valueDescription: string; // value 描述
-  valueDefine: NumberDefine | BooleanDefine | EnumDefine; // value 定义
-  defaultThreshold: Threshold; // 默认阈值
-  customThreshold: Threshold; // 用户自定义阈值
-  requires: string[]; // 规则运行依赖的主属性，需要全部有值才执行该规则
-  getValue(ctx: Context, apiService: OpenApiService): Promise<any>; // 取值函数，从引擎外部获取数据
+  id: string;
+  enable: boolean;
+  valueDescription: string;
+  valueDefine: NumberDefine | BooleanDefine | EnumDefine;
+  defaultThreshold: Threshold;
+  customThreshold: Threshold;
+  requires: string[];
+  getValue(ctx: Context, apiService: OpenApiService): Promise<any>;
 }
 
 export const defaultRules: RuleConfig[] = [

@@ -3,7 +3,6 @@ import { caseInsensitiveCompare } from "../utils";
 
 const rules: RuleConfig[] = [
   {
-    // receive token 是否被标记为假资产
     id: "1008",
     enable: true,
     valueDescription: "Fake token expected to be received in transaction",
@@ -20,7 +19,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // receive token 是否被标记为垃圾资产
     id: "1009",
     enable: true,
     valueDescription: "Scam token expected to be received in transaction",
@@ -37,7 +35,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // 交易滑点
     id: "1011",
     enable: true,
     valueDescription: "Slippage is too high",
@@ -74,7 +71,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // 美元价值变化
     id: "1012",
     enable: true,
     valueDescription: "Price difference is too big",
@@ -108,7 +104,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    // receiver 是其他地址
     id: "1069",
     enable: true,
     valueDescription: "Recipient address does not match current address",
