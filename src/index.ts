@@ -1,6 +1,6 @@
 import { RuleConfig, Level, Threshold } from "./rules";
 import strategyDecision from "./strategyDecision";
-import { OpenApiService } from "@debank/rabby-api";
+import { OpenApiService } from "@rabby-wallet/rabby-api";
 
 export interface Result {
   id: string;
