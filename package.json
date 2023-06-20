@@ -1,6 +1,6 @@
 {
   "name": "@rabby-wallet/rabby-security-engine",
-  "version": "1.0.20",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -31,10 +31,10 @@
   },
   "dependencies": {
     "@debank/common": "^0.2.31",
-    "@debank/rabby-api": "^0.5.34"
+    "@rabby-wallet/rabby-api": "^0.6.0"
   },
   "peerDependencies": {
     "@debank/common": "^0.2.x",
-    "@debank/rabby-api": "^0.5.x"
+    "@rabby-wallet/rabby-api": ">= 0.6.x"
   }
 }

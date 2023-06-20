@@ -1,4 +1,4 @@
-import { OpenApiService } from "@debank/rabby-api";
+import { OpenApiService } from "@rabby-wallet/rabby-api";
 import connectRules from "./connect";
 import swapRules from "./swap";
 import sendRules from "./send";
