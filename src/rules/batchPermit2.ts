@@ -2,7 +2,7 @@ import { RuleConfig } from ".";
 
 const rules: RuleConfig[] = [
   {
-    id: "1071",
+    id: "1109",
     enable: true,
     valueDescription: "Spender address is an Externally Owned Account (EOA)",
     valueDefine: {
@@ -12,14 +12,14 @@ const rules: RuleConfig[] = [
       danger: true,
     },
     customThreshold: {},
-    requires: ["permit2"],
+    requires: ["batchPermit2"],
     async getValue(ctx) {
-      const { isEOA } = ctx.permit2!;
+      const { isEOA } = ctx.batchPermit2!;
       return isEOA;
     },
   },
   {
-    id: "1072",
+    id: "1110",
     enable: true,
     valueDescription: "Spender address risk exposure",
     valueDefine: {
@@ -44,14 +44,14 @@ const rules: RuleConfig[] = [
       },
     },
     customThreshold: {},
-    requires: ["permit2"],
+    requires: ["batchPermit2"],
     async getValue(ctx) {
-      const data = ctx.permit2!;
+      const data = ctx.batchPermit2!;
       return data.riskExposure;
     },
   },
   {
-    id: "1073",
+    id: "1111",
     enable: true,
     valueDescription: "Contract deployment duration is too short",
     valueDefine: {
@@ -70,14 +70,14 @@ const rules: RuleConfig[] = [
       },
     },
     customThreshold: {},
-    requires: ["permit2"],
+    requires: ["batchPermit2"],
     async getValue(ctx) {
-      const data = ctx.permit2!;
+      const data = ctx.batchPermit2!;
       return data.deployDays;
     },
   },
   {
-    id: "1074",
+    id: "1112",
     enable: true,
     valueDescription: "Have you interacted with this contract before",
     valueDefine: {
@@ -87,14 +87,14 @@ const rules: RuleConfig[] = [
       warning: false,
     },
     customThreshold: {},
-    requires: ["permit2"],
+    requires: ["batchPermit2"],
     async getValue(ctx) {
-      const { hasInteracted } = ctx.permit2!;
+      const { hasInteracted } = ctx.batchPermit2!;
       return hasInteracted;
     },
   },
   {
-    id: "1075",
+    id: "1113",
     enable: true,
     valueDescription: "Spender address is a risky contract",
     valueDefine: {
@@ -104,9 +104,9 @@ const rules: RuleConfig[] = [
       danger: true,
     },
     customThreshold: {},
-    requires: ["permit2"],
+    requires: ["batchPermit2"],
     async getValue(ctx) {
-      const { isDanger } = ctx.permit2!;
+      const { isDanger } = ctx.batchPermit2!;
       return isDanger;
     },
   },
