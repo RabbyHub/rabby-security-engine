@@ -16,6 +16,8 @@ import crossToken from "./crossToken";
 import crossSwapToken from "./crossSwapToken";
 import verifyAddress from "./verifyAddress";
 import createKey from "./createKey";
+import batchPermit2 from './batchPermit2';
+import batchSellNFT from './batchSellNFT';
 
 export interface ContractAddress {
   chainId: string;
@@ -87,6 +89,14 @@ export interface ContextActionData {
     hasInteracted: boolean;
     isDanger: boolean;
   };
+  batchPermit2?: {
+    spender: string;
+    isEOA: boolean;
+    riskExposure: number;
+    deployDays: number;
+    hasInteracted: boolean;
+    isDanger: boolean;
+  };
   tokenApprove?: {
     chainId: string;
     spender: string;
@@ -146,6 +156,13 @@ export interface ContextActionData {
     receiveTokenIsFake: boolean;
     from: string;
   };
+  batchSellNFT?: {
+    specificBuyer: string | null;
+    receiver: string;
+    receiveTokenHasScam: boolean;
+    receiveTokenHasFake: boolean;
+    from: string;
+  }
   buyNFT?: {
     from: string;
     receiver: string;
@@ -247,4 +264,6 @@ export const defaultRules: RuleConfig[] = [
   ...sellNFT,
   ...verifyAddress,
   ...createKey,
+  ...batchPermit2,
+  ...batchSellNFT,
 ];
