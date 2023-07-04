@@ -26,13 +26,13 @@ const rules: RuleConfig[] = [
       type: "boolean",
     },
     defaultThreshold: {
-      danger: true,
+      danger: false,
     },
     customThreshold: {},
     requires: ["batchSellNFT"],
     async getValue(ctx) {
       const { receiver, from } = ctx.batchSellNFT!;
-      return !caseInsensitiveCompare(from, receiver);
+      return caseInsensitiveCompare(from, receiver);
     },
   },
   {

@@ -26,13 +26,13 @@ const rules: RuleConfig[] = [
       type: "boolean",
     },
     defaultThreshold: {
-      danger: true,
+      danger: false,
     },
     customThreshold: {},
     requires: ["sellNFT"],
     async getValue(ctx) {
       const { receiver, from } = ctx.sellNFT!;
-      return !caseInsensitiveCompare(from, receiver);
+      return caseInsensitiveCompare(from, receiver);
     },
   },
   {
