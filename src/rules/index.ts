@@ -16,8 +16,8 @@ import crossToken from "./crossToken";
 import crossSwapToken from "./crossSwapToken";
 import verifyAddress from "./verifyAddress";
 import createKey from "./createKey";
-import batchPermit2 from './batchPermit2';
-import batchSellNFT from './batchSellNFT';
+import batchPermit2 from "./batchPermit2";
+import batchSellNFT from "./batchSellNFT";
 
 export interface ContractAddress {
   chainId: string;
@@ -162,7 +162,7 @@ export interface ContextActionData {
     receiveTokenHasScam: boolean;
     receiveTokenHasFake: boolean;
     from: string;
-  }
+  };
   buyNFT?: {
     from: string;
     receiver: string;
@@ -243,6 +243,7 @@ export interface RuleConfig {
   defaultThreshold: Threshold;
   customThreshold: Threshold;
   requires: string[];
+  valueTooltip?: string;
   getValue(ctx: Context, apiService: OpenApiService): Promise<any>;
 }
 
