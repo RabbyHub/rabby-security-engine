@@ -22,7 +22,9 @@ const rules: RuleConfig[] = [
   {
     id: "1044",
     enable: true,
-    valueDescription: "Spender address risk exposure",
+    valueDescription: "Trust value",
+    valueTooltip:
+      "Trust value refers to the top NFT approved and exposed to this contract. When trust value is low, it's more likely to be risky.",
     valueDefine: {
       type: "int",
       min: 0,
