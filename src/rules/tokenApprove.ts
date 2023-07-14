@@ -22,7 +22,7 @@ const rules: RuleConfig[] = [
   {
     id: "1023",
     enable: true,
-    valueDescription: "Contract trust value",
+    valueDescription: "Trust value",
     valueTooltip:
       "Trust value refers to the total asset value approved and exposed to this contract. When trust value is low, it's more likely to be risky.",
     valueDefine: {
