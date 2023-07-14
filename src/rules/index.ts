@@ -18,6 +18,7 @@ import verifyAddress from "./verifyAddress";
 import createKey from "./createKey";
 import batchPermit2 from "./batchPermit2";
 import batchSellNFT from "./batchSellNFT";
+import revokeToken from "./revokeToken";
 
 export interface ContractAddress {
   chainId: string;
@@ -192,6 +193,9 @@ export interface ContextActionData {
     usdValuePercentage: number;
     usdValueChange: number;
   };
+  revokeApprove?: {
+    gasUsed: number;
+  };
   contractCall?: {
     id: string;
     chainId: string;
@@ -267,4 +271,5 @@ export const defaultRules: RuleConfig[] = [
   ...createKey,
   ...batchPermit2,
   ...batchSellNFT,
+  ...revokeToken,
 ];
