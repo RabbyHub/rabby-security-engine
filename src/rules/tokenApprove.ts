@@ -23,6 +23,7 @@ const rules: RuleConfig[] = [
     id: "1023",
     enable: true,
     valueDescription: "Spender address risk exposure",
+    valueTooltip: "The total asset value approved and exposed to this contract",
     valueDefine: {
       type: "int",
       min: 0,
