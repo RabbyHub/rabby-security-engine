@@ -22,7 +22,8 @@ const rules: RuleConfig[] = [
     id: "1072",
     enable: true,
     valueDescription: "Spender address risk exposure",
-    valueTooltip: "The total asset value approved and exposed to this contract",
+    valueTooltip:
+      "Trust value refers to the total asset value approved and exposed to this contract. When trust value is low, it's more likely to be risky.",
     valueDefine: {
       type: "int",
       min: 0,
