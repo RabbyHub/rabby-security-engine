@@ -24,7 +24,7 @@ const rules: RuleConfig[] = [
     enable: true,
     valueDescription: "Trust value",
     valueTooltip:
-      "Trust value refers to the total asset value approved and exposed to this contract. When trust value is low, it's more likely to be risky.",
+      "Trust value refers to the total token approved and exposed to this contract. A low trust value indicates either risk or inactivity for 180 days.",
     valueDefine: {
       type: "int",
       min: 0,
