@@ -19,6 +19,7 @@ import createKey from "./createKey";
 import batchPermit2 from "./batchPermit2";
 import batchSellNFT from "./batchSellNFT";
 import revokeToken from "./revokeToken";
+import { caseInsensitiveCompare } from "../utils";
 
 export interface ContractAddress {
   chainId: string;
@@ -49,6 +50,7 @@ export interface ContextActionData {
     url: string;
   };
   swap?: {
+    id: string;
     receiveTokenIsScam: boolean;
     receiveTokenIsFake: boolean;
     receiver: string;
@@ -81,6 +83,7 @@ export interface ContextActionData {
     deployDays: number;
     hasInteracted: boolean;
     isDanger: boolean;
+    chainId?: string;
   };
   permit2?: {
     spender: string;
@@ -89,6 +92,7 @@ export interface ContextActionData {
     deployDays: number;
     hasInteracted: boolean;
     isDanger: boolean;
+    chainId?: string;
   };
   batchPermit2?: {
     spender: string;
@@ -97,6 +101,7 @@ export interface ContextActionData {
     deployDays: number;
     hasInteracted: boolean;
     isDanger: boolean;
+    chainId?: string;
   };
   tokenApprove?: {
     chainId: string;
@@ -144,11 +149,15 @@ export interface ContextActionData {
     from: string;
     receiver: string;
     slippageTolerance: number;
+    id: string;
+    chainId: string;
   };
   unwrapToken?: {
     from: string;
     receiver: string;
     slippageTolerance: number;
+    id: string;
+    chainId: string;
   };
   sellNFT?: {
     specificBuyer: string | null;
@@ -156,6 +165,8 @@ export interface ContextActionData {
     receiveTokenIsScam: boolean;
     receiveTokenIsFake: boolean;
     from: string;
+    chainId?: string;
+    id?: string;
   };
   batchSellNFT?: {
     specificBuyer: string | null;
@@ -163,12 +174,16 @@ export interface ContextActionData {
     receiveTokenHasScam: boolean;
     receiveTokenHasFake: boolean;
     from: string;
+    id?: string;
+    chainId?: string;
   };
   buyNFT?: {
     from: string;
     receiver: string;
     receiveNFTIsScam: boolean;
     receiveNFTIsFake: boolean;
+    id?: string;
+    chainId?: string;
   };
   swapTokenOrder?: {
     receiveTokenIsScam: boolean;
@@ -176,6 +191,8 @@ export interface ContextActionData {
     receiver: string;
     from: string;
     usdValuePercentage: number;
+    id?: string;
+    chainId?: string;
   };
   crossToken?: {
     from: string;
@@ -184,6 +201,8 @@ export interface ContextActionData {
     receiver: string;
     usdValuePercentage: number;
     usdValueChange: number;
+    id?: string;
+    chainId?: string;
   };
   crossSwapToken?: {
     from: string;
@@ -192,6 +211,8 @@ export interface ContextActionData {
     receiver: string;
     usdValuePercentage: number;
     usdValueChange: number;
+    id?: string;
+    chainId?: string;
   };
   revokeApprove?: {
     gasUsed: number;
@@ -239,6 +260,8 @@ export type Threshold = {
   [key in Level]?: NumberValue | boolean | string[];
 };
 
+type Require = keyof ContextActionData;
+
 export interface RuleConfig {
   id: string;
   enable: boolean;
@@ -246,7 +269,7 @@ export interface RuleConfig {
   valueDefine: NumberDefine | BooleanDefine | EnumDefine;
   defaultThreshold: Threshold;
   customThreshold: Threshold;
-  requires: string[];
+  requires: Require[];
   valueTooltip?: string;
   getValue(ctx: Context, apiService: OpenApiService): Promise<any>;
 }
@@ -272,4 +295,204 @@ export const defaultRules: RuleConfig[] = [
   ...batchPermit2,
   ...batchSellNFT,
   ...revokeToken,
+  {
+    id: "1133",
+    enable: true,
+    valueDescription: "Spender address is marked as Trust",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      safe: true,
+    },
+    customThreshold: {},
+    requires: [
+      "tokenApprove",
+      "permit",
+      "permit2",
+      "nftApprove",
+      "collectionApprove",
+      "batchPermit2",
+    ],
+    async getValue(ctx) {
+      const { spender, chainId } = (ctx.tokenApprove ||
+        ctx.permit ||
+        ctx.permit2 ||
+        ctx.batchPermit2 ||
+        ctx.collectionApprove ||
+        ctx.nftApprove)!;
+      const blacklist = ctx.userData.contractWhitelist;
+
+      return blacklist.some(
+        (item) =>
+          item.chainId === chainId &&
+          caseInsensitiveCompare(spender, item.address)
+      );
+    },
+  },
+  {
+    id: "1134",
+    enable: true,
+    valueDescription: "Spender address is marked as Blocked",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      forbidden: true,
+    },
+    customThreshold: {},
+    requires: [
+      "tokenApprove",
+      "permit",
+      "permit2",
+      "nftApprove",
+      "collectionApprove",
+      "batchPermit2",
+    ],
+    async getValue(ctx) {
+      const { spender, chainId } = (ctx.tokenApprove ||
+        ctx.permit ||
+        ctx.permit2 ||
+        ctx.batchPermit2 ||
+        ctx.collectionApprove ||
+        ctx.nftApprove)!;
+      const blacklist = ctx.userData.contractBlacklist;
+
+      return blacklist.some(
+        (item) =>
+          item.chainId === chainId &&
+          caseInsensitiveCompare(spender, item.address)
+      );
+    },
+  },
+  {
+    id: "1136",
+    enable: true,
+    valueDescription:
+      "Spender address is marked as Blocked but not on this chain",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      warning: true,
+    },
+    customThreshold: {},
+    requires: [
+      "tokenApprove",
+      "permit",
+      "permit2",
+      "nftApprove",
+      "collectionApprove",
+      "batchPermit2",
+    ],
+    async getValue(ctx) {
+      const { spender, chainId } = (ctx.tokenApprove ||
+        ctx.permit ||
+        ctx.permit2 ||
+        ctx.batchPermit2 ||
+        ctx.collectionApprove ||
+        ctx.nftApprove)!;
+      const blacklist = ctx.userData.contractBlacklist;
+      const hasSame = blacklist.some(
+        (item) =>
+          item.chainId === chainId &&
+          caseInsensitiveCompare(spender, item.address)
+      );
+      if (hasSame) return false;
+      return blacklist.some(
+        (item) =>
+          item.chainId !== chainId &&
+          caseInsensitiveCompare(spender, item.address)
+      );
+    },
+  },
+  {
+    id: "1135",
+    enable: true,
+    valueDescription: "Contract address is marked as Blocked",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      forbidden: true,
+    },
+    customThreshold: {},
+    requires: [
+      "swap",
+      "wrapToken",
+      "unwrapToken",
+      "sellNFT",
+      "batchSellNFT",
+      "swapTokenOrder",
+      "buyNFT",
+      "crossToken",
+      "crossSwapToken",
+      "contractCall",
+    ],
+    async getValue(ctx) {
+      const { id, chainId } = (ctx.swap ||
+        ctx.wrapToken ||
+        ctx.unwrapToken ||
+        ctx.swapTokenOrder ||
+        ctx.sellNFT ||
+        ctx.batchSellNFT ||
+        ctx.buyNFT ||
+        ctx.crossToken ||
+        ctx.crossSwapToken ||
+        ctx.contractCall)!;
+      const blacklist = ctx.userData.contractBlacklist;
+
+      return blacklist.some(
+        (item) =>
+          item.chainId === chainId && caseInsensitiveCompare(id, item.address)
+      );
+    },
+  },
+  {
+    id: "1137",
+    enable: true,
+    valueDescription:
+      "Contract address is marked as Blocked but not on this chain",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      warning: true,
+    },
+    customThreshold: {},
+    requires: [
+      "swap",
+      "wrapToken",
+      "unwrapToken",
+      "sellNFT",
+      "batchSellNFT",
+      "swapTokenOrder",
+      "buyNFT",
+      "crossToken",
+      "crossSwapToken",
+      "contractCall",
+    ],
+    async getValue(ctx) {
+      const { id, chainId } = (ctx.swap ||
+        ctx.wrapToken ||
+        ctx.swapTokenOrder ||
+        ctx.unwrapToken ||
+        ctx.sellNFT ||
+        ctx.batchSellNFT ||
+        ctx.buyNFT ||
+        ctx.crossToken ||
+        ctx.crossSwapToken ||
+        ctx.contractCall)!;
+      const blacklist = ctx.userData.contractBlacklist;
+      const hasSame = blacklist.some(
+        (item) =>
+          item.chainId === chainId && caseInsensitiveCompare(id, item.address)
+      );
+      if (hasSame) return false;
+      return blacklist.some(
+        (item) =>
+          item.chainId !== chainId && caseInsensitiveCompare(id, item.address)
+      );
+    },
+  },
 ];
