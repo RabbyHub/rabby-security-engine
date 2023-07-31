@@ -298,7 +298,7 @@ export const defaultRules: RuleConfig[] = [
   {
     id: "1133",
     enable: true,
-    valueDescription: "Spender address is marked as Trust",
+    valueDescription: "Spender address is marked as trusted",
     valueDefine: {
       type: "boolean",
     },
@@ -333,7 +333,7 @@ export const defaultRules: RuleConfig[] = [
   {
     id: "1134",
     enable: true,
-    valueDescription: "Spender address is marked as Blocked",
+    valueDescription: "Spender address is marked as blocked",
     valueDefine: {
       type: "boolean",
     },
@@ -368,8 +368,7 @@ export const defaultRules: RuleConfig[] = [
   {
     id: "1136",
     enable: true,
-    valueDescription:
-      "Spender address is marked as Blocked but not on this chain",
+    valueDescription: "Spender address is marked as blocked on another chain",
     valueDefine: {
       type: "boolean",
     },
@@ -409,7 +408,7 @@ export const defaultRules: RuleConfig[] = [
   {
     id: "1135",
     enable: true,
-    valueDescription: "Contract address is marked as Blocked",
+    valueDescription: "Contract address is marked as blocked",
     valueDefine: {
       type: "boolean",
     },
@@ -451,8 +450,7 @@ export const defaultRules: RuleConfig[] = [
   {
     id: "1137",
     enable: true,
-    valueDescription:
-      "Contract address is marked as Blocked but not on this chain",
+    valueDescription: "Contract address is marked as blocked on another chain",
     valueDefine: {
       type: "boolean",
     },
