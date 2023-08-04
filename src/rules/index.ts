@@ -365,46 +365,46 @@ export const defaultRules: RuleConfig[] = [
       );
     },
   },
-  {
-    id: "1136",
-    enable: true,
-    valueDescription: "Spender address is marked as blocked on another chain",
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: true,
-    },
-    customThreshold: {},
-    requires: [
-      "tokenApprove",
-      "permit",
-      "permit2",
-      "nftApprove",
-      "collectionApprove",
-      "batchPermit2",
-    ],
-    async getValue(ctx) {
-      const { spender, chainId } = (ctx.tokenApprove ||
-        ctx.permit ||
-        ctx.permit2 ||
-        ctx.batchPermit2 ||
-        ctx.collectionApprove ||
-        ctx.nftApprove)!;
-      const blacklist = ctx.userData.contractBlacklist;
-      const hasSame = blacklist.some(
-        (item) =>
-          item.chainId === chainId &&
-          caseInsensitiveCompare(spender, item.address)
-      );
-      if (hasSame) return false;
-      return blacklist.some(
-        (item) =>
-          item.chainId !== chainId &&
-          caseInsensitiveCompare(spender, item.address)
-      );
-    },
-  },
+  // {
+  //   id: "1136",
+  //   enable: true,
+  //   valueDescription: "Spender address is marked as blocked on another chain",
+  //   valueDefine: {
+  //     type: "boolean",
+  //   },
+  //   defaultThreshold: {
+  //     warning: true,
+  //   },
+  //   customThreshold: {},
+  //   requires: [
+  //     "tokenApprove",
+  //     "permit",
+  //     "permit2",
+  //     "nftApprove",
+  //     "collectionApprove",
+  //     "batchPermit2",
+  //   ],
+  //   async getValue(ctx) {
+  //     const { spender, chainId } = (ctx.tokenApprove ||
+  //       ctx.permit ||
+  //       ctx.permit2 ||
+  //       ctx.batchPermit2 ||
+  //       ctx.collectionApprove ||
+  //       ctx.nftApprove)!;
+  //     const blacklist = ctx.userData.contractBlacklist;
+  //     const hasSame = blacklist.some(
+  //       (item) =>
+  //         item.chainId === chainId &&
+  //         caseInsensitiveCompare(spender, item.address)
+  //     );
+  //     if (hasSame) return false;
+  //     return blacklist.some(
+  //       (item) =>
+  //         item.chainId !== chainId &&
+  //         caseInsensitiveCompare(spender, item.address)
+  //     );
+  //   },
+  // },
   {
     id: "1135",
     enable: true,
@@ -447,50 +447,50 @@ export const defaultRules: RuleConfig[] = [
       );
     },
   },
-  {
-    id: "1137",
-    enable: true,
-    valueDescription: "Contract address is marked as blocked on another chain",
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: true,
-    },
-    customThreshold: {},
-    requires: [
-      "swap",
-      "wrapToken",
-      "unwrapToken",
-      "sellNFT",
-      "batchSellNFT",
-      "swapTokenOrder",
-      "buyNFT",
-      "crossToken",
-      "crossSwapToken",
-      "contractCall",
-    ],
-    async getValue(ctx) {
-      const { id, chainId } = (ctx.swap ||
-        ctx.wrapToken ||
-        ctx.swapTokenOrder ||
-        ctx.unwrapToken ||
-        ctx.sellNFT ||
-        ctx.batchSellNFT ||
-        ctx.buyNFT ||
-        ctx.crossToken ||
-        ctx.crossSwapToken ||
-        ctx.contractCall)!;
-      const blacklist = ctx.userData.contractBlacklist;
-      const hasSame = blacklist.some(
-        (item) =>
-          item.chainId === chainId && caseInsensitiveCompare(id, item.address)
-      );
-      if (hasSame) return false;
-      return blacklist.some(
-        (item) =>
-          item.chainId !== chainId && caseInsensitiveCompare(id, item.address)
-      );
-    },
-  },
+  // {
+  //   id: "1137",
+  //   enable: true,
+  //   valueDescription: "Contract address is marked as blocked on another chain",
+  //   valueDefine: {
+  //     type: "boolean",
+  //   },
+  //   defaultThreshold: {
+  //     warning: true,
+  //   },
+  //   customThreshold: {},
+  //   requires: [
+  //     "swap",
+  //     "wrapToken",
+  //     "unwrapToken",
+  //     "sellNFT",
+  //     "batchSellNFT",
+  //     "swapTokenOrder",
+  //     "buyNFT",
+  //     "crossToken",
+  //     "crossSwapToken",
+  //     "contractCall",
+  //   ],
+  //   async getValue(ctx) {
+  //     const { id, chainId } = (ctx.swap ||
+  //       ctx.wrapToken ||
+  //       ctx.swapTokenOrder ||
+  //       ctx.unwrapToken ||
+  //       ctx.sellNFT ||
+  //       ctx.batchSellNFT ||
+  //       ctx.buyNFT ||
+  //       ctx.crossToken ||
+  //       ctx.crossSwapToken ||
+  //       ctx.contractCall)!;
+  //     const blacklist = ctx.userData.contractBlacklist;
+  //     const hasSame = blacklist.some(
+  //       (item) =>
+  //         item.chainId === chainId && caseInsensitiveCompare(id, item.address)
+  //     );
+  //     if (hasSame) return false;
+  //     return blacklist.some(
+  //       (item) =>
+  //         item.chainId !== chainId && caseInsensitiveCompare(id, item.address)
+  //     );
+  //   },
+  // },
 ];
