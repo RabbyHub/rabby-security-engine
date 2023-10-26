@@ -26,7 +26,7 @@ class Engine {
     await Promise.all(
       this.rules.map(async (rule) => {
         const deps = rule.requires;
-        if (deps.every((key) => key in ctx)) {
+        if (deps.some((key) => key in ctx)) {
           const enable = rule.enable;
           try {
             const value = await rule.getValue(ctx, this.apiService);
