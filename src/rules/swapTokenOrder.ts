@@ -80,7 +80,8 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["swapTokenOrder"],
     async getValue(ctx) {
-      const { receiver, from } = ctx.swapTokenOrder!;
+      const { receiver, from, receiverInWallet } = ctx.swapTokenOrder!;
+      if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
     },
   },

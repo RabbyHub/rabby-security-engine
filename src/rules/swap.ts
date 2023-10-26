@@ -116,7 +116,8 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["swap"],
     async getValue(ctx) {
-      const { receiver, from } = ctx.swap!;
+      const { receiver, from, receiverInWallet } = ctx.swap!;
+      if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
     },
   },

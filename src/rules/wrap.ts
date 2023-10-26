@@ -47,7 +47,8 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["wrapToken"],
     async getValue(ctx) {
-      const { receiver, from } = ctx.wrapToken!;
+      const { receiver, from, receiverInWallet } = ctx.wrapToken!;
+      if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
     },
   },
@@ -96,7 +97,8 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["unwrapToken"],
     async getValue(ctx) {
-      const { receiver, from } = ctx.unwrapToken!;
+      const { receiver, from, receiverInWallet } = ctx.unwrapToken!;
+      if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
     },
   },

@@ -67,7 +67,8 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["crossToken"],
     async getValue(ctx) {
-      const { receiver, from } = ctx.crossToken!;
+      const { receiver, from, receiverInWallet } = ctx.crossToken!;
+      if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
     },
   },
