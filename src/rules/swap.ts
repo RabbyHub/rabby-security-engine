@@ -106,17 +106,18 @@ const rules: RuleConfig[] = [
   {
     id: "1069",
     enable: true,
-    valueDescription: "Recipient address does not match current address",
+    valueDescription: "Recipient address is unknown",
     valueDefine: {
       type: "boolean",
     },
     defaultThreshold: {
-      danger: true,
+      warning: true,
     },
     customThreshold: {},
     requires: ["swap"],
     async getValue(ctx) {
-      const { receiver, from } = ctx.swap!;
+      const { receiver, from, receiverInWallet } = ctx.swap!;
+      if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
     },
   },

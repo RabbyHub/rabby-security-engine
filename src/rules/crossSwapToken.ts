@@ -57,17 +57,18 @@ const rules: RuleConfig[] = [
   {
     id: "1096",
     enable: true,
-    valueDescription: "Recipient address does not match current address",
+    valueDescription: "Recipient address is unknown",
     valueDefine: {
       type: "boolean",
     },
     defaultThreshold: {
-      danger: true,
+      warning: true,
     },
     customThreshold: {},
     requires: ["crossSwapToken"],
     async getValue(ctx) {
-      const { receiver, from } = ctx.crossSwapToken!;
+      const { receiver, from, receiverInWallet } = ctx.crossSwapToken!;
+      if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
     },
   },
