@@ -37,12 +37,12 @@ const rules: RuleConfig[] = [
   {
     id: "1092",
     enable: true,
-    valueDescription: "Recipient address does not match current address",
+    valueDescription: "Recipient address is unknown",
     valueDefine: {
       type: "boolean",
     },
     defaultThreshold: {
-      danger: true,
+      warning: true,
     },
     customThreshold: {},
     requires: ["wrapToken"],
@@ -87,12 +87,12 @@ const rules: RuleConfig[] = [
   {
     id: "1093",
     enable: true,
-    valueDescription: "Recipient address does not match current address",
+    valueDescription: "Recipient address is unknown",
     valueDefine: {
       type: "boolean",
     },
     defaultThreshold: {
-      danger: true,
+      warning: true,
     },
     customThreshold: {},
     requires: ["unwrapToken"],

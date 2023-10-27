@@ -187,7 +187,6 @@ export interface ContextActionData {
     receiveNFTIsFake: boolean;
     id?: string;
     chainId?: string;
-    receiverInWallet: boolean;
   };
   swapTokenOrder?: {
     receiveTokenIsScam: boolean;

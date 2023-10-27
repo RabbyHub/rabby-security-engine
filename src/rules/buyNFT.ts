@@ -15,8 +15,7 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["buyNFT"],
     async getValue(ctx) {
-      const { receiver, from, receiverInWallet } = ctx.buyNFT!;
-      if (receiverInWallet) return false;
+      const { receiver, from } = ctx.buyNFT!;
       return !caseInsensitiveCompare(from, receiver);
     },
   },
