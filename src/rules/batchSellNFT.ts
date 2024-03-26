@@ -13,15 +13,17 @@ const rules: RuleConfig[] = [
       warning: true,
     },
     customThreshold: {},
-    requires: ["batchSellNFT"],
+    requires: ["batchSellNFT", "assetOrder"],
     async getValue(ctx) {
-      return !!ctx.batchSellNFT!.specificBuyer;
+      const { specificBuyer } = (ctx.batchSellNFT || ctx.assetOrder)!;
+      return !!specificBuyer;
     },
   },
   {
     id: "1115",
     enable: true,
-    valueDescription: "Is the earnings from the order be paid to my current address",
+    valueDescription:
+      "Is the earnings from the order be paid to my current address",
     valueDefine: {
       type: "boolean",
     },
@@ -29,9 +31,9 @@ const rules: RuleConfig[] = [
       danger: false,
     },
     customThreshold: {},
-    requires: ["batchSellNFT"],
+    requires: ["batchSellNFT", "assetOrder"],
     async getValue(ctx) {
-      const { receiver, from } = ctx.batchSellNFT!;
+      const { receiver, from } = (ctx.batchSellNFT || ctx.assetOrder)!;
       return caseInsensitiveCompare(from, receiver);
     },
   },

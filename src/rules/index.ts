@@ -227,6 +227,13 @@ export interface ContextActionData {
     id: string;
     chainId: string;
   };
+  assetOrder?: {
+    specificBuyer: string | null;
+    receiver: string;
+    from: string;
+    id?: string;
+    chainId?: string;
+  };
 }
 
 export interface Context extends ContextActionData {
@@ -393,6 +400,7 @@ export const defaultRules: RuleConfig[] = [
       "crossToken",
       "crossSwapToken",
       "contractCall",
+      "assetOrder",
     ],
     async getValue(ctx) {
       const { id, chainId } = (ctx.swap ||
@@ -404,6 +412,7 @@ export const defaultRules: RuleConfig[] = [
         ctx.buyNFT ||
         ctx.crossToken ||
         ctx.crossSwapToken ||
+        ctx.assetOrder ||
         ctx.contractCall)!;
       const blacklist = ctx.userData.contractBlacklist;
 
