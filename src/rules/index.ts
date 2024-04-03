@@ -240,6 +240,7 @@ export interface ContextActionData {
     desc: string;
     is_asset_changed: boolean;
     is_involving_privacy: boolean;
+    from: string;
     receiver?: string;
     receiverInWallet: boolean;
   };

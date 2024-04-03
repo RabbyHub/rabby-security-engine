@@ -1,3 +1,4 @@
+import { caseInsensitiveCompare } from "../utils";
 import { RuleConfig } from ".";
 
 const rules: RuleConfig[] = [
@@ -14,8 +15,10 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["common"],
     async getValue(ctx) {
-      const { receiverInWallet } = ctx.common!;
-      return !receiverInWallet;
+      const { receiverInWallet, from, receiver } = ctx.common!;
+      if (!receiver) return false;
+      if (receiverInWallet) return false;
+      return !caseInsensitiveCompare(from, receiver);
     },
   },
 ];
