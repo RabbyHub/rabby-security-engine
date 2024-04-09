@@ -42,7 +42,7 @@ const rules: RuleConfig[] = [
       type: "boolean",
     },
     defaultThreshold: {
-      warning: true,
+      danger: true,
     },
     customThreshold: {},
     requires: ["wrapToken"],
@@ -92,7 +92,7 @@ const rules: RuleConfig[] = [
       type: "boolean",
     },
     defaultThreshold: {
-      warning: true,
+      danger: true,
     },
     customThreshold: {},
     requires: ["unwrapToken"],

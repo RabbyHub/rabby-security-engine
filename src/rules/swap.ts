@@ -111,7 +111,7 @@ const rules: RuleConfig[] = [
       type: "boolean",
     },
     defaultThreshold: {
-      warning: true,
+      danger: true,
     },
     customThreshold: {},
     requires: ["swap"],
