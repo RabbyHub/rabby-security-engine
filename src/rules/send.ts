@@ -108,6 +108,24 @@ const rules: RuleConfig[] = [
       return onTransferWhitelist;
     },
   },
+  {
+    id: "1142",
+    enable: true,
+    valueDescription: "The recipient address is from your seed phrase",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      safe: true,
+    },
+    customThreshold: {},
+    requires: ["send", "sendNFT"],
+    async getValue(ctx) {
+      const { hasReceiverMnemonicInWallet, hasReceiverPrivateKeyInWallet } =
+        ctx.send!;
+      return hasReceiverMnemonicInWallet || hasReceiverPrivateKeyInWallet
+    },
+  },
 ];
 
 export default rules;
