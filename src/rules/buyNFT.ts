@@ -5,7 +5,8 @@ const rules: RuleConfig[] = [
   {
     id: "1085",
     enable: true,
-    valueDescription: "Is the earnings from the order be paid to my current address",
+    valueDescription:
+      "Is the earnings from the order be paid to my current address",
     valueDefine: {
       type: "boolean",
     },
@@ -17,6 +18,9 @@ const rules: RuleConfig[] = [
     async getValue(ctx) {
       const { receiver, from } = ctx.buyNFT!;
       return !caseInsensitiveCompare(from, receiver);
+    },
+    descriptions: {
+      danger: `The recipient address is not your current address`,
     },
   },
   {
@@ -34,6 +38,9 @@ const rules: RuleConfig[] = [
     async getValue(ctx) {
       return ctx.buyNFT!.receiveNFTIsFake;
     },
+    descriptions: {
+      danger: `You will receive a scam NFT in the transaction`,
+    },
   },
   {
     id: "1087",
@@ -49,6 +56,9 @@ const rules: RuleConfig[] = [
     requires: ["buyNFT"],
     async getValue(ctx) {
       return ctx.buyNFT!.receiveNFTIsScam;
+    },
+    descriptions: {
+      warning: `You will receive a low-quality NFT in the transaction; it might be a scam`,
     },
   },
 ];

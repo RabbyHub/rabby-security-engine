@@ -17,6 +17,9 @@ const rules: RuleConfig[] = [
       const { isEOA } = ctx.permit2!;
       return isEOA;
     },
+    descriptions: {
+      danger: `The spender address is an Externally Owned Account (EOA), potentially a scam address`,
+    },
   },
   {
     id: "1072",
@@ -51,6 +54,10 @@ const rules: RuleConfig[] = [
       const data = ctx.permit2!;
       return data.riskExposure;
     },
+    descriptions: {
+      danger: `The spender address's trust value is lower than $10,000`,
+      warning: `The spender address's trust value is lower than $50,000`,
+    },
   },
   {
     id: "1073",
@@ -77,6 +84,9 @@ const rules: RuleConfig[] = [
       const data = ctx.permit2!;
       return data.deployDays;
     },
+    descriptions: {
+      warning: `The contract is only deployed within 3 days, indicating a scam`,
+    },
   },
   {
     id: "1074",
@@ -94,6 +104,9 @@ const rules: RuleConfig[] = [
       const { hasInteracted } = ctx.permit2!;
       return hasInteracted;
     },
+    descriptions: {
+      warning: `You have never interacted with this contract before`,
+    },
   },
   {
     id: "1075",
@@ -110,6 +123,9 @@ const rules: RuleConfig[] = [
     async getValue(ctx) {
       const { isDanger } = ctx.permit2!;
       return isDanger;
+    },
+    descriptions: {
+      danger: `The spender address is a risky contract`,
     },
   },
 ];

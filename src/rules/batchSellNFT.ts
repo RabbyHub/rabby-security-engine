@@ -18,6 +18,9 @@ const rules: RuleConfig[] = [
       const { specificBuyer } = (ctx.batchSellNFT || ctx.assetOrder)!;
       return !!specificBuyer;
     },
+    descriptions: {
+      warning: `The order has a specific buyer; Ensure that you intend to sell to this buyer`,
+    },
   },
   {
     id: "1115",
@@ -36,6 +39,9 @@ const rules: RuleConfig[] = [
       const { receiver, from } = (ctx.batchSellNFT || ctx.assetOrder)!;
       return caseInsensitiveCompare(from, receiver);
     },
+    descriptions: {
+      danger: `The earnings from the order are not paid to your current address`,
+    },
   },
   {
     id: "1116",
@@ -52,6 +58,9 @@ const rules: RuleConfig[] = [
     async getValue(ctx) {
       return ctx.batchSellNFT!.receiveTokenHasFake;
     },
+    descriptions: {
+      danger: `You will receive a scam token in the transaction`,
+    },
   },
   {
     id: "1117",
@@ -67,6 +76,9 @@ const rules: RuleConfig[] = [
     requires: ["batchSellNFT"],
     async getValue(ctx) {
       return ctx.batchSellNFT!.receiveTokenHasScam;
+    },
+    descriptions: {
+      warning: `You will receive a low-quality token in the transaction; it might be a scam`,
     },
   },
 ];
