@@ -289,7 +289,7 @@ export interface RuleConfig {
   id: string;
   enable: boolean;
   valueDescription: string;
-  descriptions: Partial<Record<Level, string>>;
+  descriptions?: Partial<Record<Level, string>>;
   valueDefine: NumberDefine | BooleanDefine | EnumDefine;
   defaultThreshold: Threshold;
   customThreshold: Threshold;
