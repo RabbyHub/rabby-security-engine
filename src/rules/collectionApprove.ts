@@ -17,6 +17,10 @@ const rules: RuleConfig[] = [
       const { isEOA } = ctx.collectionApprove!;
       return isEOA;
     },
+    descriptions: {
+      danger:
+        "The spender address is an Externally Owned Account (EOA), potentially a scam address",
+    },
   },
   // {
   //   id: "1054",
@@ -77,6 +81,9 @@ const rules: RuleConfig[] = [
       const data = ctx.collectionApprove!;
       return data.deployDays || 0;
     },
+    descriptions: {
+      warning: `The contract is only deployed within 3 days, indicating a scam`,
+    },
   },
   {
     id: "1056",
@@ -94,6 +101,9 @@ const rules: RuleConfig[] = [
       const { hasInteracted } = ctx.collectionApprove!;
       return hasInteracted;
     },
+    descriptions: {
+      warning: `You have never interacted with this contract before`,
+    },
   },
   {
     id: "1060",
@@ -110,6 +120,9 @@ const rules: RuleConfig[] = [
     async getValue(ctx) {
       const { isDanger } = ctx.collectionApprove!;
       return isDanger;
+    },
+    descriptions: {
+      danger: `The spender address is a risky contract`,
     },
   },
 ];

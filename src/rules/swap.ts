@@ -6,6 +6,9 @@ const rules: RuleConfig[] = [
     id: "1008",
     enable: true,
     valueDescription: "Fake token expected to be received in transaction",
+    descriptions: {
+      danger: "You will receive a scam token in the transaction",
+    },
     valueDefine: {
       type: "boolean",
     },
@@ -22,6 +25,10 @@ const rules: RuleConfig[] = [
     id: "1009",
     enable: true,
     valueDescription: "Scam token expected to be received in transaction",
+    descriptions: {
+      warning:
+        "You will receive a low-quality token in the transaction; it might be a scam",
+    },
     valueDefine: {
       type: "boolean",
     },
@@ -38,6 +45,10 @@ const rules: RuleConfig[] = [
     id: "1011",
     enable: true,
     valueDescription: "Slippage is too high",
+    descriptions: {
+      danger: "The slippage is very high (> 20%), causing huge funds loss",
+      warning: "The slippage is high (> 10%), causing huge funds loss",
+    },
     valueDefine: {
       type: "percent",
       min: null,
@@ -74,6 +85,10 @@ const rules: RuleConfig[] = [
     id: "1012",
     enable: true,
     valueDescription: "Price difference is too big",
+    descriptions: {
+      danger: "The price difference exceeds 20%, causing huge funds loss",
+      warning: "The price difference exceeds 10%, causing huge funds loss",
+    },
     valueDefine: {
       type: "percent",
       min: -100,
@@ -107,6 +122,9 @@ const rules: RuleConfig[] = [
     id: "1069",
     enable: true,
     valueDescription: "Recipient address is unknown",
+    descriptions: {
+      danger: "The recipient address is not your current address",
+    },
     valueDefine: {
       type: "boolean",
     },

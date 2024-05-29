@@ -17,6 +17,9 @@ const rules: RuleConfig[] = [
     async getValue(ctx) {
       return ctx.crossToken!.receiveTokenIsFake;
     },
+    descriptions: {
+      danger: `You will receive a scam token in the transaction`,
+    },
   },
   {
     id: "1098",
@@ -33,6 +36,9 @@ const rules: RuleConfig[] = [
     async getValue(ctx) {
       return ctx.crossToken!.receiveTokenIsScam;
     },
+    descriptions: {
+      warning: `You will receive a low-quality token in the transaction; it might be a scam`,
+    },
   },
   {
     id: "1105",
@@ -42,7 +48,7 @@ const rules: RuleConfig[] = [
       type: "boolean",
     },
     defaultThreshold: {
-      warning: true
+      warning: true,
     },
     customThreshold: {},
     requires: ["crossToken"],
@@ -52,6 +58,9 @@ const rules: RuleConfig[] = [
         return true;
       }
       return false;
+    },
+    descriptions: {
+      warning: `The price difference is big, causing huge funds loss`,
     },
   },
   {
@@ -70,6 +79,9 @@ const rules: RuleConfig[] = [
       const { receiver, from, receiverInWallet } = ctx.crossToken!;
       if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
+    },
+    descriptions: {
+      danger: `The recipient address is not your current address`,
     },
   },
 ];

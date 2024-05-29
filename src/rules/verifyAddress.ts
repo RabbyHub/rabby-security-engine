@@ -18,6 +18,9 @@ const rules: RuleConfig[] = [
       const { allowOrigins, origin } = ctx.verifyAddress!;
       return allowOrigins.includes(origin);
     },
+    descriptions: {
+      danger: `The transaction is not associated with the website that initiated it`,
+    },
   },
 ];
 

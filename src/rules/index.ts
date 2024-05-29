@@ -77,6 +77,7 @@ export interface ContextActionData {
     isTokenContract: boolean;
     usedChainList: string[];
     onTransferWhitelist: boolean;
+    receiverIsSpoofing: boolean;
     hasReceiverMnemonicInWallet: boolean;
     hasReceiverPrivateKeyInWallet: boolean;
   };
@@ -130,6 +131,7 @@ export interface ContextActionData {
     } | null;
     usedChainList: string[];
     onTransferWhitelist: boolean;
+    receiverIsSpoofing: boolean;
     hasReceiverMnemonicInWallet: boolean;
     hasReceiverPrivateKeyInWallet: boolean;
   };
@@ -293,6 +295,7 @@ export interface RuleConfig {
   id: string;
   enable: boolean;
   valueDescription: string;
+  descriptions?: Partial<Record<Level, string>>;
   valueDefine: NumberDefine | BooleanDefine | EnumDefine;
   defaultThreshold: Threshold;
   customThreshold: Threshold;
@@ -357,6 +360,9 @@ export const defaultRules: RuleConfig[] = [
           caseInsensitiveCompare(spender, item.address)
       );
     },
+    descriptions: {
+      safe: `The spender address is marked as "Trusted"`,
+    },
   },
   {
     id: "1134",
@@ -391,6 +397,9 @@ export const defaultRules: RuleConfig[] = [
           item.chainId === chainId &&
           caseInsensitiveCompare(spender, item.address)
       );
+    },
+    descriptions: {
+      forbidden: `The spender address is marked as "Blocked"`,
     },
   },
   {
@@ -435,6 +444,9 @@ export const defaultRules: RuleConfig[] = [
         (item) =>
           item.chainId === chainId && caseInsensitiveCompare(id, item.address)
       );
+    },
+    descriptions: {
+      forbidden: `The spender address is marked as blocked on another chain`,
     },
   },
 ];

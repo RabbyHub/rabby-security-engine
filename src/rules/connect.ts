@@ -9,6 +9,9 @@ const rules: RuleConfig[] = [
     valueDefine: {
       type: "boolean",
     },
+    descriptions: {
+      danger: "The website has been flagged as scam by Rabby",
+    },
     defaultThreshold: {
       danger: true,
     },
@@ -26,6 +29,9 @@ const rules: RuleConfig[] = [
     valueDescription: "Site has been flagged as phishing by MetaMask",
     valueDefine: {
       type: "boolean",
+    },
+    descriptions: {
+      danger: "The website has been flagged as scam by MetaMask",
     },
     defaultThreshold: {
       danger: true,
@@ -45,6 +51,9 @@ const rules: RuleConfig[] = [
     id: "1003",
     enable: true,
     valueDescription: "Site has been flagged as phishing by ScamSniffer",
+    descriptions: {
+      danger: "The website has been flagged as scam by ScamSniffer",
+    },
     valueDefine: {
       type: "boolean",
     },
@@ -67,6 +76,9 @@ const rules: RuleConfig[] = [
     enable: true,
     valueDescription:
       "The number of community platforms that have listed this site",
+    descriptions: {
+      warning: "The website has not been listed on any community platforms",
+    },
     valueDefine: {
       type: "int",
       min: 0,
@@ -93,6 +105,9 @@ const rules: RuleConfig[] = [
     id: "1005",
     enable: true,
     valueDescription: "Site popularity",
+    descriptions: {
+      danger: "The website has very low popularity",
+    },
     valueDefine: {
       type: "enum",
       list: ["very_low", "low", "medium", "high"],
@@ -117,6 +132,9 @@ const rules: RuleConfig[] = [
     id: "1006",
     enable: true,
     valueDescription: "Site has been added to your blacklist",
+    descriptions: {
+      forbidden: `The website has been marked as "Blocked" by you`,
+    },
     valueDefine: {
       type: "boolean",
     },
@@ -135,6 +153,9 @@ const rules: RuleConfig[] = [
     id: "1007",
     enable: true,
     valueDescription: "Site has been added to your whitelist",
+    descriptions: {
+      safe: `The website has been marked as "Trusted" by you`,
+    },
     valueDefine: {
       type: "boolean",
     },
@@ -153,6 +174,9 @@ const rules: RuleConfig[] = [
     id: "1070",
     enable: true,
     valueDescription: "Site has been verified by Rabby",
+    descriptions: {
+      safe: "The website has been verified by Rabby",
+    },
     valueDefine: {
       type: "boolean",
     },
@@ -167,6 +191,6 @@ const rules: RuleConfig[] = [
       return !!is_verified;
     },
   },
-]
+];
 
 export default rules;

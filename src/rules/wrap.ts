@@ -33,6 +33,10 @@ const rules: RuleConfig[] = [
       const { slippageTolerance } = ctx.wrapToken!;
       return slippageTolerance * 100;
     },
+    descriptions: {
+      danger: `You'll receive fewer wrap tokens than what you paid, by a difference greater than 5%`,
+      warning: `You'll receive fewer wrap tokens than what you paid, by a difference between 0% and 5%`,
+    },
   },
   {
     id: "1092",
@@ -50,6 +54,9 @@ const rules: RuleConfig[] = [
       const { receiver, from, receiverInWallet } = ctx.wrapToken!;
       if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
+    },
+    descriptions: {
+      danger: `The recipient address doesn't match your current address and isn't marked as "Trusted" by you`,
     },
   },
   {
@@ -83,6 +90,10 @@ const rules: RuleConfig[] = [
       const { slippageTolerance } = ctx.unwrapToken!;
       return slippageTolerance * 100;
     },
+    descriptions: {
+      danger: `You'll receive fewer tokens than what you paid using Wrap Token, by a difference greater than 5%`,
+      warning: `You'll receive fewer tokens than what you paid using Wrap Token, by a difference between 0% and 5%`,
+    },
   },
   {
     id: "1093",
@@ -100,6 +111,9 @@ const rules: RuleConfig[] = [
       const { receiver, from, receiverInWallet } = ctx.unwrapToken!;
       if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
+    },
+    descriptions: {
+      danger: `The recipient address doesn't match your current address and isn't marked as "Trusted" by you`,
     },
   },
 ];

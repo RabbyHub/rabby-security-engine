@@ -17,6 +17,9 @@ const rules: RuleConfig[] = [
     async getValue(ctx) {
       return ctx.swapTokenOrder!.receiveTokenIsFake;
     },
+    descriptions: {
+      danger: `You will receive a scam token in the transaction`,
+    },
   },
   {
     id: "1091",
@@ -32,6 +35,9 @@ const rules: RuleConfig[] = [
     requires: ["swapTokenOrder"],
     async getValue(ctx) {
       return ctx.swapTokenOrder!.receiveTokenIsScam;
+    },
+    descriptions: {
+      warning: `You will receive a low-quality token in the transaction; it might be a scam`,
     },
   },
   {
@@ -66,6 +72,10 @@ const rules: RuleConfig[] = [
       if (usdValuePercentage === null) return null;
       return usdValuePercentage * 100;
     },
+    descriptions: {
+      danger: `The price difference exceeds 20%, causing huge funds loss`,
+      warning: `The price difference exceeds 10%, causing huge funds loss`,
+    },
   },
   {
     id: "1094",
@@ -83,6 +93,9 @@ const rules: RuleConfig[] = [
       const { receiver, from, receiverInWallet } = ctx.swapTokenOrder!;
       if (receiverInWallet) return false;
       return !caseInsensitiveCompare(from, receiver);
+    },
+    descriptions: {
+      danger: `The recipient address is not your current address`,
     },
   },
 ];

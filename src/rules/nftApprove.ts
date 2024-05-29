@@ -18,6 +18,10 @@ const rules: RuleConfig[] = [
       const { isEOA } = ctx.nftApprove!;
       return isEOA;
     },
+    descriptions: {
+      danger:
+        "The spender address is an Externally Owned Account (EOA), potentially a scam address",
+    },
   },
   // {
   //   id: "1044",
@@ -78,6 +82,9 @@ const rules: RuleConfig[] = [
       const data = ctx.nftApprove!;
       return data.deployDays || 0;
     },
+    descriptions: {
+      warning: "The contract is only deployed within 3 days, indicating a scam",
+    },
   },
   {
     id: "1048",
@@ -95,6 +102,9 @@ const rules: RuleConfig[] = [
       const { hasInteracted } = ctx.nftApprove!;
       return hasInteracted;
     },
+    descriptions: {
+      warning: "You have never interacted with this contract before",
+    },
   },
   {
     id: "1052",
@@ -111,6 +121,9 @@ const rules: RuleConfig[] = [
     async getValue(ctx) {
       const { isDanger } = ctx.nftApprove!;
       return isDanger;
+    },
+    descriptions: {
+      danger: "The spender address is a risky contract",
     },
   },
 ];
