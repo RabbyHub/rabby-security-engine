@@ -131,6 +131,27 @@ const rules: RuleConfig[] = [
     },
   },
   {
+    id: "1142",
+    enable: true,
+    valueDescription: "The recipient address is from your seed phrase",
+    valueDefine: {
+      type: "boolean",
+    },
+    descriptions: {
+      safe: "The recipient address is from your seed phrase",
+    },
+    defaultThreshold: {
+      safe: true,
+    },
+    customThreshold: {},
+    requires: ["send", "sendNFT"],
+    async getValue(ctx) {
+      const { hasReceiverMnemonicInWallet, hasReceiverPrivateKeyInWallet } =
+        ctx.send!;
+      return hasReceiverMnemonicInWallet || hasReceiverPrivateKeyInWallet
+    },
+  },
+  {
     id: "1143",
     enable: true,
     valueDescription: "The recipient address is a scam address flagged by Rabby",

@@ -78,6 +78,8 @@ export interface ContextActionData {
     usedChainList: string[];
     onTransferWhitelist: boolean;
     receiverIsSpoofing: boolean;
+    hasReceiverMnemonicInWallet: boolean;
+    hasReceiverPrivateKeyInWallet: boolean;
   };
   permit?: {
     spender: string;
@@ -130,6 +132,8 @@ export interface ContextActionData {
     usedChainList: string[];
     onTransferWhitelist: boolean;
     receiverIsSpoofing: boolean;
+    hasReceiverMnemonicInWallet: boolean;
+    hasReceiverPrivateKeyInWallet: boolean;
   };
   nftApprove?: {
     chainId: string;

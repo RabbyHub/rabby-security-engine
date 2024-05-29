@@ -22,44 +22,40 @@ const rules: RuleConfig[] = [
         "The spender address is an Externally Owned Account (EOA), potentially a scam address",
     },
   },
-  {
-    id: "1054",
-    enable: true,
-    valueDescription: "Trust value",
-    valueTooltip:
-      "Trust value refers to the top NFT approved and exposed to this contract. A low trust value indicates either risk or inactivity for 180 days.",
-    valueDefine: {
-      type: "int",
-      min: 0,
-      minIncluded: true,
-      max: null,
-      maxIncluded: false,
-    },
-    defaultThreshold: {
-      danger: {
-        min: 0,
-        minIncluded: true,
-        max: 10000,
-        maxIncluded: true,
-      },
-      warning: {
-        min: 10000,
-        minIncluded: false,
-        max: 50000,
-        maxIncluded: true,
-      },
-    },
-    customThreshold: {},
-    requires: ["collectionApprove"],
-    async getValue(ctx) {
-      const data = ctx.collectionApprove!;
-      return data.riskExposure;
-    },
-    descriptions: {
-      danger: `The USD value of the top NFT that has approved to this spender is lower than $10,000`,
-      warning: `The USD value of the top NFT that has approved to this spender is lower than $50,000`,
-    },
-  },
+  // {
+  //   id: "1054",
+  //   enable: true,
+  //   valueDescription: "Trust value",
+  //   valueTooltip:
+  //     "Trust value refers to the top NFT approved and exposed to this contract. A low trust value indicates either risk or inactivity for 180 days.",
+  //   valueDefine: {
+  //     type: "int",
+  //     min: 0,
+  //     minIncluded: true,
+  //     max: null,
+  //     maxIncluded: false,
+  //   },
+  //   defaultThreshold: {
+  //     danger: {
+  //       min: 0,
+  //       minIncluded: true,
+  //       max: 10000,
+  //       maxIncluded: true,
+  //     },
+  //     warning: {
+  //       min: 10000,
+  //       minIncluded: false,
+  //       max: 100000,
+  //       maxIncluded: true,
+  //     },
+  //   },
+  //   customThreshold: {},
+  //   requires: ["collectionApprove"],
+  //   async getValue(ctx) {
+  //     const data = ctx.collectionApprove!;
+  //     return data.riskExposure;
+  //   },
+  // },
   {
     id: "1055",
     enable: true,
