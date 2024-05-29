@@ -77,6 +77,7 @@ export interface ContextActionData {
     isTokenContract: boolean;
     usedChainList: string[];
     onTransferWhitelist: boolean;
+    receiverIsSpoofing: boolean;
   };
   permit?: {
     spender: string;
@@ -128,6 +129,7 @@ export interface ContextActionData {
     } | null;
     usedChainList: string[];
     onTransferWhitelist: boolean;
+    receiverIsSpoofing: boolean;
   };
   nftApprove?: {
     chainId: string;
