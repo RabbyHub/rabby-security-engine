@@ -144,7 +144,7 @@ const rules: RuleConfig[] = [
       danger: true,
     },
     customThreshold: {},
-    requires: ["send", "send"],
+    requires: ["send", "sendNFT"],
     async getValue(ctx) {
       const { receiverIsSpoofing } = (ctx.send || ctx.sendNFT)!;
       return receiverIsSpoofing;
