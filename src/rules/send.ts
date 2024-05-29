@@ -130,6 +130,26 @@ const rules: RuleConfig[] = [
       return onTransferWhitelist;
     },
   },
+  {
+    id: "1143",
+    enable: true,
+    valueDescription: "The recipient address is a scam address flagged by Rabby",
+    descriptions: {
+      danger: "The recipient address is a scam address flagged by Rabby",
+    },
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ["send", "send"],
+    async getValue(ctx) {
+      const { receiverIsSpoofing } = (ctx.send || ctx.sendNFT)!;
+      return receiverIsSpoofing;
+    },
+  },
 ];
 
 export default rules;
