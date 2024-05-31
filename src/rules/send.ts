@@ -147,14 +147,15 @@ const rules: RuleConfig[] = [
     requires: ["send", "sendNFT"],
     async getValue(ctx) {
       const { hasReceiverMnemonicInWallet, hasReceiverPrivateKeyInWallet } =
-        ctx.send!;
-      return hasReceiverMnemonicInWallet || hasReceiverPrivateKeyInWallet
+        (ctx.send || ctx.sendNFT)!;
+      return hasReceiverMnemonicInWallet || hasReceiverPrivateKeyInWallet;
     },
   },
   {
     id: "1143",
     enable: true,
-    valueDescription: "The recipient address is a scam address flagged by Rabby",
+    valueDescription:
+      "The recipient address is a scam address flagged by Rabby",
     descriptions: {
       danger: "The recipient address is a scam address flagged by Rabby",
     },
