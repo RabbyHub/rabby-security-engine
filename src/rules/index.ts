@@ -20,6 +20,7 @@ import batchPermit2 from "./batchPermit2";
 import batchSellNFT from "./batchSellNFT";
 import revokeToken from "./revokeToken";
 import common from "./common";
+import assetOrder from './assetOrder';
 import { caseInsensitiveCompare } from "../utils";
 
 export interface ContractAddress {
@@ -240,6 +241,7 @@ export interface ContextActionData {
     from: string;
     id?: string;
     chainId?: string;
+    hasReceiveAssets: boolean;
   };
   common?: {
     title: string;
@@ -326,6 +328,7 @@ export const defaultRules: RuleConfig[] = [
   ...batchSellNFT,
   ...revokeToken,
   ...common,
+  ...assetOrder,
   {
     id: "1133",
     enable: true,
