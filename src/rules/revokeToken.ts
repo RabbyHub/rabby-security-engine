@@ -1,5 +1,7 @@
 import { RuleConfig } from ".";
 
+const IGNORE_CHECK_CHAINS = ["mnt"];
+
 const rules: RuleConfig[] = [
   {
     id: "1118",
@@ -24,6 +26,11 @@ const rules: RuleConfig[] = [
     requires: ["revokeApprove"],
     async getValue(ctx) {
       const data = ctx.revokeApprove!;
+
+      if (data.chainId && IGNORE_CHECK_CHAINS.includes(data.chainId)) {
+        return 0;
+      }
+
       return data.gasUsed;
     },
     descriptions: {
