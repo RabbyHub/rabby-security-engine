@@ -20,7 +20,7 @@ import batchPermit2 from "./batchPermit2";
 import batchSellNFT from "./batchSellNFT";
 import revokeToken from "./revokeToken";
 import common from "./common";
-import assetOrder from './assetOrder';
+import assetOrder from "./assetOrder";
 import { caseInsensitiveCompare } from "../utils";
 
 export interface ContractAddress {
@@ -230,6 +230,7 @@ export interface ContextActionData {
   };
   revokeApprove?: {
     gasUsed: number;
+    chainId?: string;
   };
   contractCall?: {
     id: string;
