@@ -21,44 +21,24 @@ const rules: RuleConfig[] = [
       danger: `The spender address is an Externally Owned Account (EOA), potentially a scam address`,
     },
   },
-  // {
-  //   id: "1110",
-  //   enable: true,
-  //   valueDescription: "Trust value",
-  //   valueTooltip:
-  //     "Trust value refers to the total token approved and exposed to this contract. A low trust value indicates either risk or inactivity for 180 days.",
-  //   valueDefine: {
-  //     type: "int",
-  //     min: 0,
-  //     minIncluded: true,
-  //     max: null,
-  //     maxIncluded: false,
-  //   },
-  //   defaultThreshold: {
-  //     danger: {
-  //       min: 0,
-  //       minIncluded: true,
-  //       max: 10000,
-  //       maxIncluded: true,
-  //     },
-  //     warning: {
-  //       min: 10000,
-  //       minIncluded: false,
-  //       max: 50000,
-  //       maxIncluded: true,
-  //     },
-  //   },
-  //   customThreshold: {},
-  //   requires: ["batchPermit2"],
-  //   async getValue(ctx) {
-  //     const data = ctx.batchPermit2!;
-  //     return data.riskExposure;
-  //   },
-  //   descriptions: {
-  //     danger: `The spender address's trust value is lower than $10,000`,
-  //     warning: `The spender address's trust value is lower than $50,000`,
-  //   },
-  // },
+  {
+    id: "1145",
+    enable: true,
+    valueDescription:
+      "This spender contract may be a phishing risk because its trust value is $0.",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      warning: true,
+    },
+    customThreshold: {},
+    requires: ["batchPermit2"],
+    async getValue(ctx) {
+      const { riskExposure } = ctx.batchPermit2!;
+      return riskExposure === 0 || riskExposure === null;
+    },
+  },
   {
     id: "1111",
     enable: true,

@@ -23,40 +23,24 @@ const rules: RuleConfig[] = [
         "The spender address is an Externally Owned Account (EOA), potentially a scam address",
     },
   },
-  // {
-  //   id: "1044",
-  //   enable: true,
-  //   valueDescription: "Trust value",
-  //   valueTooltip:
-  //     "Trust value refers to the top NFT approved and exposed to this contract. A low trust value indicates either risk or inactivity for 180 days.",
-  //   valueDefine: {
-  //     type: "int",
-  //     min: 0,
-  //     minIncluded: true,
-  //     max: null,
-  //     maxIncluded: false,
-  //   },
-  //   defaultThreshold: {
-  //     danger: {
-  //       min: 0,
-  //       minIncluded: true,
-  //       max: 10000,
-  //       maxIncluded: true,
-  //     },
-  //     warning: {
-  //       min: 10000,
-  //       minIncluded: false,
-  //       max: 100000,
-  //       maxIncluded: true,
-  //     },
-  //   },
-  //   customThreshold: {},
-  //   requires: ["nftApprove"],
-  //   async getValue(ctx) {
-  //     const data = ctx.nftApprove!;
-  //     return data.riskExposure;
-  //   },
-  // },
+  {
+    id: "1147",
+    enable: true,
+    valueDescription:
+      "This spender contract may be a phishing risk because its trust value is $0.",
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      warning: true,
+    },
+    customThreshold: {},
+    requires: ["nftApprove"],
+    async getValue(ctx) {
+      const { riskExposure } = ctx.nftApprove!;
+      return riskExposure === 0 || riskExposure === null;
+    },
+  },
   {
     id: "1045",
     enable: true,
