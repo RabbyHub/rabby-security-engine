@@ -38,7 +38,7 @@ const rules: RuleConfig[] = [
     requires: ["nftApprove"],
     async getValue(ctx) {
       const { riskExposure } = ctx.nftApprove!;
-      return riskExposure === 0;
+      return riskExposure === 0 || riskExposure === null;
     },
   },
   {

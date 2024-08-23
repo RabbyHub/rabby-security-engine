@@ -36,7 +36,7 @@ const rules: RuleConfig[] = [
     requires: ["permit2"],
     async getValue(ctx) {
       const { riskExposure } = ctx.permit2!;
-      return riskExposure === 0;
+      return riskExposure === 0 || riskExposure === null;
     },
   },
   {

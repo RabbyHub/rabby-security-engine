@@ -38,7 +38,7 @@ const rules: RuleConfig[] = [
     requires: ["tokenApprove"],
     async getValue(ctx) {
       const { riskExposure } = ctx.tokenApprove!;
-      return riskExposure === 0;
+      return riskExposure === 0 || riskExposure === null;
     },
   },
   {

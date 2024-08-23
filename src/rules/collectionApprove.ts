@@ -37,7 +37,7 @@ const rules: RuleConfig[] = [
     requires: ["collectionApprove"],
     async getValue(ctx) {
       const { riskExposure } = ctx.collectionApprove!;
-      return riskExposure === 0;
+      return riskExposure === 0 || riskExposure === null;
     },
   },
   {

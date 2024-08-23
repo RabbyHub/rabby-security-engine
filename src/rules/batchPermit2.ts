@@ -36,7 +36,7 @@ const rules: RuleConfig[] = [
     requires: ["batchPermit2"],
     async getValue(ctx) {
       const { riskExposure } = ctx.batchPermit2!;
-      return riskExposure === 0;
+      return riskExposure === 0 || riskExposure === null;
     },
   },
   {
