@@ -31,6 +31,10 @@ const rules: RuleConfig[] = [
         return 0;
       }
 
+      if (data.gasUsed === undefined || data.gasUsed === null) {
+        return 0;
+      }
+
       return data.gasUsed;
     },
     descriptions: {
