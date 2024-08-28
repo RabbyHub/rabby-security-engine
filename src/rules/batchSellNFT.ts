@@ -34,9 +34,9 @@ const rules: RuleConfig[] = [
       danger: false,
     },
     customThreshold: {},
-    requires: ["batchSellNFT", "assetOrder"],
+    requires: ["batchSellNFT", "assetOrder", "multiSwap", "swapLimitPay"],
     async getValue(ctx) {
-      const { receiver, from } = (ctx.batchSellNFT || ctx.assetOrder)!;
+      const { receiver, from } = (ctx.batchSellNFT || ctx.assetOrder || ctx.multiSwap || ctx.swapLimitPay)!;
       return caseInsensitiveCompare(from, receiver);
     },
     descriptions: {
