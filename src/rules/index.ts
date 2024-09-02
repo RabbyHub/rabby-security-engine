@@ -21,6 +21,7 @@ import batchSellNFT from "./batchSellNFT";
 import revokeToken from "./revokeToken";
 import common from "./common";
 import assetOrder from "./assetOrder";
+import transferOwner from "./transferOwner";
 import { caseInsensitiveCompare } from "../utils";
 
 export interface ContractAddress {
@@ -244,6 +245,21 @@ export interface ContextActionData {
     chainId?: string;
     hasReceiveAssets: boolean;
   };
+  multiSwap?: {
+    receiver: string;
+    from: string;
+    id?: string;
+    chainId?: string;
+  };
+  swapLimitPay?: {
+    receiver: string;
+    from: string;
+    id?: string;
+    chainId?: string;
+  }
+  transferOwner?: {
+    receiverInWhitelist: boolean;
+  }
   common?: {
     title: string;
     desc: string;
@@ -330,6 +346,7 @@ export const defaultRules: RuleConfig[] = [
   ...revokeToken,
   ...common,
   ...assetOrder,
+  ...transferOwner,
   {
     id: "1133",
     enable: true,
@@ -429,6 +446,8 @@ export const defaultRules: RuleConfig[] = [
       "crossSwapToken",
       "contractCall",
       "assetOrder",
+      "multiSwap",
+      "swapLimitPay",
     ],
     async getValue(ctx) {
       const { id, chainId } = (ctx.swap ||
@@ -441,6 +460,8 @@ export const defaultRules: RuleConfig[] = [
         ctx.crossToken ||
         ctx.crossSwapToken ||
         ctx.assetOrder ||
+        ctx.multiSwap ||
+        ctx.swapLimitPay ||
         ctx.contractCall)!;
       const blacklist = ctx.userData.contractBlacklist;
 
