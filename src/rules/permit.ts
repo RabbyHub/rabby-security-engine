@@ -69,26 +69,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    id: "1080",
-    enable: true,
-    valueDescription: "Have you interacted with this contract before",
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: false,
-    },
-    customThreshold: {},
-    requires: ["permit"],
-    async getValue(ctx) {
-      const { hasInteracted } = ctx.permit!;
-      return hasInteracted;
-    },
-    descriptions: {
-      warning: `You have never interacted with this contract before`,
-    },
-  },
-  {
     id: "1106",
     enable: true,
     valueDescription: "Spender address is a risky contract",
