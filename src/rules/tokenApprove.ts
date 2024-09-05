@@ -71,26 +71,6 @@ const rules: RuleConfig[] = [
     },
   },
   {
-    id: "1025",
-    enable: true,
-    valueDescription: "Have you interacted with this contract before",
-    descriptions: {
-      warning: "You have never interacted with this contract before",
-    },
-    valueDefine: {
-      type: "boolean",
-    },
-    defaultThreshold: {
-      warning: false,
-    },
-    customThreshold: {},
-    requires: ["tokenApprove"],
-    async getValue(ctx) {
-      const { hasInteracted } = ctx.tokenApprove!;
-      return hasInteracted;
-    },
-  },
-  {
     id: "1029",
     enable: true,
     valueDescription: "Spender address is a risky contract",

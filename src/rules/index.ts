@@ -88,7 +88,6 @@ export interface ContextActionData {
     isEOA: boolean;
     riskExposure: number;
     deployDays: number;
-    hasInteracted: boolean;
     isDanger: boolean;
     chainId?: string;
   };
@@ -97,7 +96,6 @@ export interface ContextActionData {
     isEOA: boolean;
     riskExposure: number;
     deployDays: number;
-    hasInteracted: boolean;
     isDanger: boolean;
     chainId?: string;
   };
@@ -106,7 +104,6 @@ export interface ContextActionData {
     isEOA: boolean;
     riskExposure: number;
     deployDays: number;
-    hasInteracted: boolean;
     isDanger: boolean;
     chainId?: string;
   };
@@ -116,7 +113,6 @@ export interface ContextActionData {
     isEOA: boolean;
     riskExposure: number;
     deployDays: number;
-    hasInteracted: boolean;
     isDanger: boolean;
   };
   sendNFT?: {
@@ -143,7 +139,6 @@ export interface ContextActionData {
     isEOA: boolean;
     riskExposure: number;
     deployDays: number;
-    hasInteracted: boolean;
     isDanger: boolean;
   };
   collectionApprove?: {
@@ -152,7 +147,6 @@ export interface ContextActionData {
     isEOA: boolean;
     riskExposure: number;
     deployDays: number;
-    hasInteracted: boolean;
     isDanger: boolean;
   };
   wrapToken?: {
@@ -236,6 +230,7 @@ export interface ContextActionData {
   contractCall?: {
     id: string;
     chainId: string;
+    isDanger?: boolean;
   };
   assetOrder?: {
     specificBuyer: string | null;
@@ -472,6 +467,26 @@ export const defaultRules: RuleConfig[] = [
     },
     descriptions: {
       forbidden: `The spender address is marked as blocked on another chain`,
+    },
+  },
+  {
+    id: "1152",
+    enable: true,
+    valueDescription: "Contract address is a risky contract",
+    descriptions: {
+      danger: "The contract address is a risky contract",
+    },
+    valueDefine: {
+      type: "boolean",
+    },
+    defaultThreshold: {
+      danger: true,
+    },
+    customThreshold: {},
+    requires: ["contractCall"],
+    async getValue(ctx) {
+      const { isDanger } = ctx.contractCall!;
+      return !!isDanger;
     },
   },
 ];
