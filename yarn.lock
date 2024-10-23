@@ -519,22 +519,22 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@rabby-wallet/rabby-api@^0.7.27":
-  version "0.7.27"
-  resolved "https://registry.yarnpkg.com/@rabby-wallet/rabby-api/-/rabby-api-0.7.27.tgz#580e53f46eddb29dc32dd9d3ae17a63aa14883cc"
-  integrity sha512-e5UTdP1qafom86PfvPagASYEOxu9CNrG0YQCgcOCefoMAnV3MHUQmNQvyPy+tcFjNZ7fuY3RunHz/HBbu2kpfg==
+"@rabby-wallet/rabby-api@^0.8.1":
+  version "0.8.2"
+  resolved "https://registry.npmjs.org/@rabby-wallet/rabby-api/-/rabby-api-0.8.2.tgz#ab9e64b2e0775340f3a52a8159d93c9193888a15"
+  integrity sha512-i6zV0B/ctHJVpIdfzu+5t1giE4dm3TSCjxqqfD+Ysq7Dz6OhqtKLXl/2uJ+z97FK1WuVB9HikAYi8Vqya5thHQ==
   dependencies:
-    "@rabby-wallet/rabby-sign" "^0.3.3"
+    "@rabby-wallet/rabby-sign" "0.4.0"
     axios "^0.27.2"
     axios-rate-limit "^1.3.0"
     eth-rpc-errors "^4.0.3"
     lodash "^4.17.21"
     qss "^2.0.3"
 
-"@rabby-wallet/rabby-sign@^0.3.3":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@rabby-wallet/rabby-sign/-/rabby-sign-0.3.4.tgz#a36007e37775ca8b04cfbabf685ba947efe2309e"
-  integrity sha512-F1noZmXYdw7Ik3/9RmsD5k0UfbH/BUe+Mr4mu8hIdSL4h0wHGYu0AISVfl7+7ct3KOPc2OjM0Mnb/wU+qWpzyA==
+"@rabby-wallet/rabby-sign@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.npmjs.org/@rabby-wallet/rabby-sign/-/rabby-sign-0.4.0.tgz#10053200b6b807f6c9d2147492e35e8e43bf0c11"
+  integrity sha512-ZlJmdVpRxr9Ls2S3rAWrh3/ShlnbfCQ0tWGJaxhD22S00/BCqOiNjrl5Exkh9DhVUamSDEjCLTygYxbNU/QrLw==
   dependencies:
     fast-deep-equal "^3.1.3"
     lodash.clonedeep "^4.5.0"
