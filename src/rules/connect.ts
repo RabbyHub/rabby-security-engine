@@ -119,7 +119,7 @@ const rules: RuleConfig[] = [
       },
     },
     defaultThreshold: {
-      danger: ["very_low"],
+      warning: ["very_low"],
     },
     customThreshold: {},
     requires: ["origin"],
