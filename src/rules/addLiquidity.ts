@@ -54,7 +54,8 @@ const rules: RuleConfig[] = [
       return diff;
     },
     descriptions: {
-      danger: `This pool’s price differs greatly from the market price. You may lose money due to arbitrage.`,
+      danger: `The price difference between this pool price and the market price is at least 10%. You may lose money due to arbitrage.`,
+      warning: `The price difference between this pool price and the market price is at least 5%. You may lose money due to arbitrage.`,
     },
   },
 ];
