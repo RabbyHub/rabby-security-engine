@@ -251,10 +251,10 @@ export interface ContextActionData {
     from: string;
     id?: string;
     chainId?: string;
-  }
+  };
   transferOwner?: {
     receiverInWhitelist: boolean;
-  }
+  };
   common?: {
     title: string;
     desc: string;
@@ -263,6 +263,10 @@ export interface ContextActionData {
     from: string;
     receiver?: string;
     receiverInWallet: boolean;
+  };
+  addLiquidity?: {
+    receiverMatch: boolean;
+    diff: string;
   };
 }
 
