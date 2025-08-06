@@ -22,6 +22,7 @@ import revokeToken from "./revokeToken";
 import common from "./common";
 import assetOrder from "./assetOrder";
 import transferOwner from "./transferOwner";
+import addLiquidity from "./addLiquidity";
 import { caseInsensitiveCompare } from "../utils";
 
 export interface ContractAddress {
@@ -266,7 +267,7 @@ export interface ContextActionData {
   };
   addLiquidity?: {
     receiverMatch: boolean;
-    diff: string;
+    diff: number;
   };
 }
 
@@ -346,6 +347,7 @@ export const defaultRules: RuleConfig[] = [
   ...common,
   ...assetOrder,
   ...transferOwner,
+  ...addLiquidity,
   {
     id: "1133",
     enable: true,

@@ -1,5 +1,5 @@
-import Engine from "../src";
-import { RuleConfig } from "../src/rules";
+import Engine from "../../src";
+import { RuleConfig } from "../../src/rules";
 
 describe("addLiquidity rules", () => {
   let engine: Engine;
