@@ -22,6 +22,7 @@ import revokeToken from "./revokeToken";
 import common from "./common";
 import assetOrder from "./assetOrder";
 import transferOwner from "./transferOwner";
+import addLiquidity from "./addLiquidity";
 import { caseInsensitiveCompare } from "../utils";
 
 export interface ContractAddress {
@@ -251,10 +252,10 @@ export interface ContextActionData {
     from: string;
     id?: string;
     chainId?: string;
-  }
+  };
   transferOwner?: {
     receiverInWhitelist: boolean;
-  }
+  };
   common?: {
     title: string;
     desc: string;
@@ -263,6 +264,10 @@ export interface ContextActionData {
     from: string;
     receiver?: string;
     receiverInWallet: boolean;
+  };
+  addLiquidity?: {
+    receiverMatch: boolean;
+    diff: number;
   };
 }
 
@@ -342,6 +347,7 @@ export const defaultRules: RuleConfig[] = [
   ...common,
   ...assetOrder,
   ...transferOwner,
+  ...addLiquidity,
   {
     id: "1133",
     enable: true,
