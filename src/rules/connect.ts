@@ -106,7 +106,7 @@ const rules: RuleConfig[] = [
     enable: true,
     valueDescription: "Site popularity",
     descriptions: {
-      danger: "The website has very low popularity",
+      warning: "The website has very low popularity",
     },
     valueDefine: {
       type: "enum",
