@@ -88,6 +88,7 @@ export interface ContextActionData {
     spender: string;
     isEOA: boolean;
     riskExposure: number;
+    isManualSafe?: boolean;
     deployDays: number;
     isDanger: boolean;
     chainId?: string;
@@ -96,6 +97,7 @@ export interface ContextActionData {
     spender: string;
     isEOA: boolean;
     riskExposure: number;
+    isManualSafe?: boolean;
     deployDays: number;
     isDanger: boolean;
     chainId?: string;
@@ -104,6 +106,7 @@ export interface ContextActionData {
     spender: string;
     isEOA: boolean;
     riskExposure: number;
+    isManualSafe?: boolean;
     deployDays: number;
     isDanger: boolean;
     chainId?: string;
@@ -113,6 +116,7 @@ export interface ContextActionData {
     spender: string;
     isEOA: boolean;
     riskExposure: number;
+    isManualSafe?: boolean;
     deployDays: number;
     isDanger: boolean;
   };
@@ -139,6 +143,7 @@ export interface ContextActionData {
     spender: string;
     isEOA: boolean;
     riskExposure: number;
+    isManualSafe?: boolean;
     deployDays: number;
     isDanger: boolean;
   };
@@ -147,6 +152,7 @@ export interface ContextActionData {
     spender: string;
     isEOA: boolean;
     riskExposure: number;
+    isManualSafe?: boolean;
     deployDays: number;
     isDanger: boolean;
   };

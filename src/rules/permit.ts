@@ -35,7 +35,8 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["permit"],
     async getValue(ctx) {
-      const { riskExposure } = ctx.permit!;
+      const { riskExposure, isManualSafe } = ctx.permit!;
+      if (isManualSafe) return false;
       return riskExposure === 0 || riskExposure === null;
     },
   },

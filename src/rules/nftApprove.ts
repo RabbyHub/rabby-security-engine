@@ -37,7 +37,8 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["nftApprove"],
     async getValue(ctx) {
-      const { riskExposure } = ctx.nftApprove!;
+      const { riskExposure, isManualSafe } = ctx.nftApprove!;
+      if (isManualSafe) return false;
       return riskExposure === 0 || riskExposure === null;
     },
   },
