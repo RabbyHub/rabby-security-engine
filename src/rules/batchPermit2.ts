@@ -35,7 +35,8 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["batchPermit2"],
     async getValue(ctx) {
-      const { riskExposure } = ctx.batchPermit2!;
+      const { riskExposure, isManualSafe } = ctx.batchPermit2!;
+      if (isManualSafe) return false;
       return riskExposure === 0 || riskExposure === null;
     },
   },

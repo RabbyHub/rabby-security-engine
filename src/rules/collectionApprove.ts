@@ -36,7 +36,8 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["collectionApprove"],
     async getValue(ctx) {
-      const { riskExposure } = ctx.collectionApprove!;
+      const { riskExposure, isManualSafe } = ctx.collectionApprove!;
+      if (isManualSafe) return false;
       return riskExposure === 0 || riskExposure === null;
     },
   },

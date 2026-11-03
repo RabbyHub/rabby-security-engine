@@ -37,7 +37,8 @@ const rules: RuleConfig[] = [
     customThreshold: {},
     requires: ["tokenApprove"],
     async getValue(ctx) {
-      const { riskExposure } = ctx.tokenApprove!;
+      const { riskExposure, isManualSafe } = ctx.tokenApprove!;
+      if (isManualSafe) return false;
       return riskExposure === 0 || riskExposure === null;
     },
   },
